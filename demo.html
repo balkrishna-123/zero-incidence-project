@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Incident | Live Prototype — Safety Training Simulator</title>
+<style>
+/* ================= GLOBAL (light theme) ================= */
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(160deg, #f2f7fb, #e8f1f7);
+    color: #1c2733;
+}
+h1, h2, h3 { margin-bottom: 8px; }
+button {
+    padding: 12px 22px; border: none; border-radius: 10px; cursor: pointer;
+    font-weight: 700; font-size: 15px;
+    background: #0f766e; color: #fff; transition: transform .15s, box-shadow .15s;
+}
+button:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(15,118,110,.25); }
+button.ghost { background: #e6eef4; color: #123; }
+button.amber { background: #b45309; }
+.hidden { display: none !important; }
+
+/* ================= HEADER ================= */
+header {
+    background: #ffffffee; backdrop-filter: blur(4px);
+    padding: 12px 24px; display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 3px solid #0f766e; position: sticky; top: 0; z-index: 50;
+}
+header .brand { font-weight: 800; font-size: 18px; color: #0f172a; }
+header .brand small { display: block; font-weight: 500; font-size: 11px; color: #64748b; }
+.status-box { display: flex; gap: 10px; }
+.chip {
+    background: #ecfdf5; border: 1px solid #99f6e4; color: #065f46;
+    padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 700;
+}
+.chip.score { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+
+section { padding: 34px 28px 60px; text-align: center; max-width: 1200px; margin: 0 auto; }
+.sub { color: #475569; font-size: 15px; margin-top: 0; }
+
+/* ================= WELCOME ================= */
+.hero-badge {
+    display: inline-block; background: #cc008d; color: #fff; font-weight: 700;
+    padding: 6px 16px; border-radius: 999px; font-size: 13px; letter-spacing: .5px;
+}
+.hero-title { font-size: 52px; margin: 18px 0 4px; color: #0f172a; }
+.hero-sub { font-size: 20px; color: #0f766e; font-weight: 600; }
+.demo-note {
+    margin: 22px auto; max-width: 520px; background: #fff; border: 1px dashed #94a3b8;
+    border-radius: 12px; padding: 12px 18px; font-size: 13.5px; color: #334155;
+}
+
+/* ================= HUB (3D room) ================= */
+.room {
+    position: relative; width: 100%; max-width: 980px; height: 460px; margin: 26px auto 0;
+    background: linear-gradient(#dbe7f0, #c3d3e0); border-radius: 18px; overflow: hidden;
+    border: 3px solid #0f766e; box-shadow: 0 18px 40px rgba(15,23,42,.15);
+    perspective: 900px;
+}
+.floor {
+    position: absolute; left: -20%; right: -20%; bottom: -12%; height: 62%;
+    background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,.25) 0 2px, transparent 2px 90px),
+        linear-gradient(#b9c8d8, #9fb2c4);
+    transform: rotateX(58deg); transform-origin: bottom;
+}
+.wallback {
+    position: absolute; inset: 8% 6% 30%;
+    background:
+        linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,0) 30%),
+        linear-gradient(#eef4f9, #dfe9f1);
+    border: 2px solid #b7c7d6; border-bottom: none; border-radius: 8px 8px 0 0;
+}
+.window {
+    position: absolute; top: 14%; width: 9%; height: 16%; background: #cfe8f7;
+    border: 3px solid #9fb2c4; border-radius: 6px;
+}
+.door {
+    position: absolute; bottom: 30%; width: 15%; height: 42%; cursor: pointer;
+    background: linear-gradient(160deg, #c89a6b, #a97c4f);
+    border: 3px solid #7c5a36; border-bottom: none; border-radius: 10px 10px 0 0;
+    transition: transform .2s, filter .2s; text-align: center;
+}
+.door:hover { transform: translateY(-6px) scale(1.02); filter: brightness(1.06); }
+.door .plate {
+    background: #fff8ee; border: 2px solid #7c5a36; color: #4a3218; border-radius: 6px;
+    font-size: 11.5px; font-weight: 800; padding: 4px 6px; margin: 6% 8% 0;
+    line-height: 1.25;
+}
+.door .knob {
+    position: absolute; right: 12%; top: 55%; width: 10px; height: 10px; border-radius: 50%;
+    background: #f2d8b0; border: 2px solid #6b4a2a;
+}
+.door .done {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: #16a34a; color: #fff; font-size: 11px; font-weight: 800;
+    padding: 2px 10px; border-radius: 999px; white-space: nowrap;
+}
+.trainer {
+    position: absolute; left: 4%; bottom: 8%; width: 120px; text-align: center;
+}
+.trainer .body { font-size: 54px; line-height: 1; }
+.trainer .tag {
+    background: #0f172a; color: #fff; font-size: 11px; font-weight: 700;
+    border-radius: 8px; padding: 3px 8px; display: inline-block; margin-top: 4px;
+}
+.bubble {
+    position: absolute; left: 17%; bottom: 34%; max-width: 300px;
+    background: #fff; border: 2px solid #0f766e; border-radius: 14px;
+    padding: 10px 14px; font-size: 13.5px; color: #0f172a; text-align: left;
+    box-shadow: 0 8px 18px rgba(15,23,42,.15);
+}
+.bubble::after {
+    content: ""; position: absolute; left: -10px; bottom: 18px;
+    border: 8px solid transparent; border-right-color: #0f766e;
+}
+.hud {
+    position: absolute; top: 12px; right: 14px; display: flex; gap: 8px;
+}
+.hud span {
+    background: #ffffffd9; border: 1.5px solid #94a3b8; border-radius: 8px;
+    font-size: 11.5px; font-weight: 700; color: #334155; padding: 5px 10px; cursor: pointer;
+}
+.progressline { margin-top: 18px; font-size: 15px; font-weight: 700; color: #0f172a; }
+
+/* ================= SCENE (360 panorama) ================= */
+.scene-wrap {
+    position: relative; width: 100%; max-width: 980px; height: 400px; margin: 22px auto 0;
+    border-radius: 16px; overflow: hidden; border: 3px solid #0f766e; cursor: grab;
+    background: #cfdce8; box-shadow: 0 18px 40px rgba(15,23,42,.15); user-select: none;
+}
+.scene-wrap:active { cursor: grabbing; }
+.pano {
+    position: absolute; top: 0; left: 0; height: 100%; width: 200%;
+    background:
+        /* floor */
+        linear-gradient(transparent 62%, #a8b8c8 62%, #8fa2b5 100%),
+        /* shelf rows */
+        repeating-linear-gradient(90deg, transparent 0 90px, #9fb2c4 90px 104px, transparent 104px 200px),
+        /* boxes on shelves */
+        repeating-linear-gradient(90deg, transparent 0 60px, #d9b98a 60px 92px, #c47f3d 92px 118px, transparent 118px 210px),
+        /* walls + sky band */
+        linear-gradient(#eaf2f8 0 34%, #d8e4ee 34% 62%);
+    background-size: 100% 100%, 100% 26%, 100% 10%, 100% 100%;
+    background-position: 0 0, 0 34%, 0 44%, 0 0;
+    transition: transform .08s linear;
+}
+.hotspot {
+    position: absolute; width: 40px; height: 40px; border-radius: 50%;
+    background: #ef4444; color: #fff; font-weight: 800; font-size: 17px;
+    display: flex; align-items: center; justify-content: center;
+    border: 3px solid #fff; cursor: pointer; animation: pulse 1.5s infinite;
+    box-shadow: 0 4px 12px rgba(0,0,0,.3);
+}
+.hotspot.found { background: #16a34a; animation: none; cursor: default; }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.18); } 100% { transform: scale(1); } }
+.scene-hint {
+    position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+    background: #0f172acc; color: #fff; font-size: 12px; padding: 5px 14px; border-radius: 999px;
+}
+/* step panel */
+.step-panel {
+    position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%);
+    width: min(620px, 92%); background: #fff; border-radius: 14px;
+    border: 2px solid #0f766e; box-shadow: 0 14px 30px rgba(15,23,42,.25);
+    padding: 16px 18px; text-align: left;
+}
+.step-panel h4 { margin: 0 0 8px; font-size: 15.5px; color: #0f172a; }
+.opt {
+    display: block; width: 100%; text-align: left; margin: 7px 0; padding: 10px 14px;
+    background: #f1f5f9; border: 1.5px solid #cbd5e1; border-radius: 9px;
+    font-size: 14px; font-weight: 600; color: #1e293b; cursor: pointer;
+}
+.opt:hover { background: #e2e8f0; }
+.opt.correct { background: #dcfce7; border-color: #16a34a; color: #14532d; }
+.opt.wrong { background: #fee2e2; border-color: #dc2626; color: #7f1d1d; }
+.feedback { font-size: 13.5px; margin-top: 10px; font-weight: 600; min-height: 18px; }
+.feedback.ok { color: #15803d; }
+.feedback.bad { color: #b91c1c; }
+
+/* ================= QUIZ ================= */
+.quiz-box {
+    max-width: 640px; margin: 20px auto 0; background: #fff; border-radius: 16px;
+    border: 2px solid #0f766e; padding: 26px 30px; text-align: left;
+    box-shadow: 0 14px 30px rgba(15,23,42,.12);
+}
+.timerbar { height: 10px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin: 12px 0 18px; }
+.timerbar i { display: block; height: 100%; background: #f59e0b; width: 100%; border-radius: 999px; transition: width 1s linear; }
+.qmeta { font-size: 13px; color: #64748b; font-weight: 700; }
+
+/* ================= RESULT / CERT ================= */
+.result-card, .cert {
+    max-width: 640px; margin: 24px auto 0; background: #fff; border-radius: 18px;
+    padding: 30px 34px; text-align: center; box-shadow: 0 16px 36px rgba(15,23,42,.14);
+}
+.result-card { border: 2px solid #94a3b8; }
+.result-card.pass { border-color: #16a34a; }
+.result-card.fail { border-color: #dc2626; }
+.bigscore { font-size: 56px; font-weight: 800; }
+.pass-tag { background: #dcfce7; color: #14532d; font-weight: 800; padding: 6px 18px; border-radius: 999px; display: inline-block; margin: 8px 0; }
+.fail-tag { background: #fee2e2; color: #7f1d1d; font-weight: 800; padding: 6px 18px; border-radius: 999px; display: inline-block; margin: 8px 0; }
+.cert {
+    border: 4px double #0f766e; background: linear-gradient(#ffffff, #f0fdfa);
+}
+.cert .seal {
+    width: 64px; height: 64px; border-radius: 50%; margin: 10px auto;
+    background: radial-gradient(#fbbf24, #b45309); display: flex; align-items: center;
+    justify-content: center; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,.25);
+}
+.cert table { margin: 14px auto; border-collapse: collapse; font-size: 14px; }
+.cert td { padding: 5px 14px; text-align: left; color: #334155; }
+.cert td:first-child { font-weight: 700; color: #0f172a; }
+
+footer { padding: 16px; text-align: center; color: #64748b; font-size: 12.5px; border-top: 1px solid #cbd5e1; }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="brand">🛡 Zero Incident — Safety Training Simulator
+        <small>Interactive prototype · Team TechYeti</small>
+    </div>
+    <div class="status-box">
+        <div class="chip hidden" id="chipUser">👤 Ramesh S.</div>
+        <div class="chip" id="chipProgress">Modules: 0/3</div>
+        <div class="chip score" id="chipScore">Score: —</div>
+    </div>
+</header>
+
+<!-- ========== PAGE 1: WELCOME ========== -->
+<section id="welcome">
+    <span class="hero-badge">LIVE PROTOTYPE DEMONSTRATION</span>
+    <h1 class="hero-title">Zero Incident</h1>
+    <p class="hero-sub">360° warehouse safety-training simulator</p>
+    <p class="sub">Walk a 3D warehouse, open module doors, complete practical 360° activities,<br>
+    pass the timed quiz (≥ 70%) and earn the completion certificate.</p>
+    <div class="demo-note">
+        <strong>Demo account:</strong> ramesh.s / Welcome!2026 — it is pre-filled on the sign-in screen<br>
+        Prototype scoring: 3 practical checkpoints (20 marks each) + 4 quiz questions (10 each) = 100.
+    </div>
+    <button onclick="goTo('login')">Sign In →</button>
+</section>
+
+<!-- ========== PAGE 1b: LOGIN ========== -->
+<section id="login">
+    <h1>Employee Sign In</h1>
+    <p class="sub">Zero Incident Safety Training Simulator</p>
+    <div class="login-card">
+        <label>Username
+            <input id="loginUser" value="ramesh.s" autocomplete="off">
+        </label>
+        <label>Password
+            <input id="loginPass" type="password" value="Welcome!2026" autocomplete="off">
+        </label>
+        <button id="loginBtn" onclick="signIn()">Sign In</button>
+        <p class="login-note">Demo account is pre-filled — the same credentials work in the full system.</p>
+    </div>
+</section>
+
+<!-- ========== PAGE 2: 3D TRAINING HUB ========== -->
+<section id="hub">
+    <h1>3D Training Hub</h1>
+    <p class="sub">Walk the warehouse and open a module door to start training.</p>
+
+    <div class="room" id="room">
+        <div class="wallback"></div>
+        <div class="window" style="left:12%"></div>
+        <div class="window" style="left:82%"></div>
+        <div class="floor"></div>
+
+        <div class="door" style="left:19%" onclick="startModule('hazard-perception')">
+            <div class="plate">Hazard<br>Perception</div><div class="knob"></div>
+            <div class="done hidden" id="done-hazard-perception">✓ Complete</div>
+        </div>
+        <div class="door" style="left:42.5%" onclick="startModule('manual-handling')">
+            <div class="plate">Manual<br>Handling</div><div class="knob"></div>
+            <div class="done hidden" id="done-manual-handling">✓ Complete</div>
+        </div>
+        <div class="door" style="left:66%" onclick="startModule('working-at-height')">
+            <div class="plate">Working at<br>Height</div><div class="knob"></div>
+            <div class="done hidden" id="done-working-at-height">✓ Complete</div>
+        </div>
+
+        <div class="trainer">
+            <div class="body">🧑‍🏫</div><div class="tag">Your Trainer</div>
+        </div>
+        <div class="bubble" id="bubble">
+            Welcome, Ramesh! Pick a door and I'll brief you on the module.
+        </div>
+        <div class="hud">
+            <span>Profile</span><span>My Progress</span><span>Certificates</span><span>Sign Out</span>
+        </div>
+    </div>
+
+    <p class="progressline" id="hubProgress">Modules completed: 0 / 3 — complete all three to receive your Safety Certificate.</p>
+</section>
+
+<!-- ========== PAGE 3: 360 SCENE ========== -->
+<section id="scene">
+    <h1 id="sceneTitle">360° Module Scene</h1>
+    <p class="sub" id="sceneBrief">…</p>
+
+    <div class="scene-wrap" id="sceneWrap">
+        <div class="pano" id="pano"></div>
+        <div class="scene-hint">Drag to look around · click the numbered markers</div>
+        <div id="stepPanelSlot"></div>
+    </div>
+    <p class="sub" style="margin-top:14px" id="stepCount">Checkpoint 1 of 3</p>
+</section>
+
+<!-- ========== PAGE 4: QUIZ ========== -->
+<section id="quiz">
+    <h1>Knowledge Check</h1>
+    <p class="sub">5-style timed quiz — you have 20 seconds per question.</p>
+    <div class="quiz-box">
+        <div class="qmeta" id="qMeta">Question 1 of 4 · 10 marks</div>
+        <h3 id="qText" style="margin:10px 0 4px"></h3>
+        <div class="timerbar"><i id="timerFill"></i></div>
+        <div id="qOptions"></div>
+        <div class="feedback" id="qFeedback"></div>
+    </div>
+</section>
+
+<!-- ========== PAGE 5: RESULT ========== -->
+<section id="result">
+    <h1>Module Result</h1>
+    <div class="result-card" id="resultCard">
+        <div class="bigscore" id="resScore">0</div>
+        <div class="sub" id="resBreak"></div>
+        <div id="resTag"></div>
+        <p class="sub" id="resNote"></p>
+        <div style="margin-top:18px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap">
+            <button id="btnCert" class="hidden" onclick="goTo('cert')">View Certificate →</button>
+            <button id="btnRetake" class="amber hidden" onclick="startModule(state.module)">Retake Module (score &lt; 70%)</button>
+            <button class="ghost" onclick="goTo('hub'); hubIntro()">Back to Hub</button>
+        </div>
+    </div>
+</section>
+
+<!-- ========== PAGE 6: CERTIFICATE ========== -->
+<section id="cert">
+    <h1>Completion Certificate</h1>
+    <div class="cert">
+        <div class="seal">🏅</div>
+        <h2 style="margin:6px 0 2px">Zero Incident — Certificate of Completion</h2>
+        <p class="sub">Safety Training Simulator</p>
+        <table>
+            <tr><td>Employee</td><td>Ramesh S.</td></tr>
+            <tr><td>Module</td><td id="certModule">—</td></tr>
+            <tr><td>Score</td><td id="certScore">—</td></tr>
+            <tr><td>Result</td><td id="certResult">—</td></tr>
+            <tr><td>Date</td><td id="certDate">—</td></tr>
+        </table>
+        <p class="sub">Issued by the Zero Incident Safety Training Simulator — pass mark ≥ 70%.</p>
+        <button style="margin-top:14px" onclick="goTo('hub'); hubIntro()">Back to Training Hub</button>
+    </div>
+</section>
+
+<footer>
+    Interactive prototype for CET257 Enterprise Project — A7 Live Prototype Demonstration · Team TechYeti ·
+    Double-click <strong>demo.html</strong> to run — no server or internet needed.
+</footer>
+
+<script>
+/* ================= DATA (mirrors the real system's modules) ================= */
+const MODULES = {
+  "hazard-perception": {
+    title: "Hazard Perception",
+    brief: "Look closer. Make the safer call. Find the 3 hazards marked in the scene.",
+    mode: "spot",
+    steps: [
+      { label: "Spill on the main walkway" },
+      { label: "Damaged extension lead in use" },
+      { label: "Boxes stacked across the exit" }
+    ],
+    quiz: [
+      { q: "What should you do first when you spot a hazard?",
+        opts: ["Report it to your supervisor immediately", "Ignore it if it looks small", "Wait for an incident to happen"], a: 0,
+        why: "Hazards must be reported straight away so the risk is controlled." },
+      { q: "You find a spill on the main walkway. You should…",
+        opts: ["Clean it if you are trained and it is safe, and signpost the area", "Walk around it quietly", "Leave it — it is the cleaner's job"], a: 0,
+        why: "Slips are a top warehouse hazard: clear it and make the area safe." },
+      { q: "A damaged extension lead is being used. This means…",
+        opts: ["The lead must not be used and must be reported", "It is fine if the plug fits", "Wrap it with tape and carry on"], a: 0,
+        why: "Damaged insulation is an electrical shock risk — take it out of service." },
+      { q: "Escape routes must always be kept clear because…",
+        opts: ["People need a safe evacuation path in an emergency", "It keeps the floor tidy", "Stock can be stored there overnight"], a: 0,
+        why: "Blocked exits turn a normal fire into a life-threatening one." }
+    ]
+  },
+  "manual-handling": {
+    title: "Manual Handling",
+    brief: "A safer move starts before the lift. Work the 3 checkpoints and make safe movement decisions.",
+    mode: "choice",
+    steps: [
+      { prompt: "You must move a 25 kg parts crate from the dock. Best first step?",
+        opts: ["Look for a trolley or other handling aid", "Lift it using your back", "Carry it quickly before the shift ends"], a: 0,
+        why: "Use aids first — technique alone is not enough for heavy loads." },
+      { prompt: "The dispatch walkway is blocked by loose boxes. What do you do?",
+        opts: ["Clear the route and destination before moving the load", "Jump over the boxes", "Carry the load on the floor instead"], a: 0,
+        why: "Plan the route: a clear path and safe destination are part of the lift." },
+      { prompt: "The crate is within safe limits. How do you lift it?",
+        opts: ["Bend the knees, keep the back straight, hold the load close", "Twist your body as you lift", "Lift as fast as you can"], a: 0,
+        why: "Good technique: stable base, straight back, load close to the body." }
+    ],
+    quiz: [
+      { q: "T.L.I.C. stands for…",
+        opts: ["Task, Load, Individual, Capabilities and Environment", "Time, Lift, Impact, Cost", "Train, Load, Inspect, Carry"], a: 0,
+        why: "T.L.I.C. is the standard risk-assessment approach for manual handling." },
+      { q: "For awkward or heavy loads the best response is to…",
+        opts: ["Use a team lift or mechanical aid", "Twist as you turn", "Hold the load away from your body"], a: 0,
+        why: "Share or mechanise the load — never rely on posture alone." },
+      { q: "Before picking up a load you should…",
+        opts: ["Clear the route and check the destination", "Pick it up and decide on the way", "Ask no one — just move it"], a: 0,
+        why: "Assess before you lift: route, destination and help." },
+      { q: "A load beyond your safe handling limits should be…",
+        opts: ["Reported and moved with an aid or team lift", "Lifted with both arms quickly", "Left in place forever"], a: 0,
+        why: "Report over-limit loads — that is what the assessment is for." }
+    ]
+  },
+  "working-at-height": {
+    title: "Working at Height",
+    brief: "The safest step may be staying on the ground. Work the 3 checkpoints safely.",
+    mode: "choice",
+    steps: [
+      { prompt: "You need a box from the top shelf of the racking. Safest approach?",
+        opts: ["Use a step platform or ask for a retriever tool", "Stand on a pallet", "Ask a colleague to hold a crate under you"], a: 0,
+        why: "Use the right platform — never improvised standing on goods." },
+      { prompt: "You must use a ladder. What do you do first?",
+        opts: ["Do a pre-use check (condition, footing, secure position)", "Just climb up", "Check it after you finish"], a: 0,
+        why: "Pre-use checks catch defects before they cause a fall." },
+      { prompt: "You are working on the mezzanine edge. What protects you?",
+        opts: ["Guard rails / barriers at the edge", "Tape on the floor", "A warning sign"], a: 0,
+        why: "Collective protection (guard rails) beats personal warnings." }
+    ],
+    quiz: [
+      { q: "The safest approach to working at height is to…",
+        opts: ["Avoid the need first, then control the risk", "Just work quickly", "Use the tallest ladder available"], a: 0,
+        why: "Avoid → control → last resort: the hierarchy of control." },
+      { q: "A portable ladder is suitable for…",
+        opts: ["Short-duration light work with safe access", "Long tasks carrying materials", "Every day, for anything"], a: 0,
+        why: "Ladders are for short light tasks — otherwise use a proper platform." },
+      { q: "A ladder must always…",
+        opts: ["Be inspected and on secure footing", "Lean at any angle", "Be tied only at the top"], a: 0,
+        why: "Stable base + inspection = safe ladder use." },
+      { q: "Before climbing you should check…",
+        opts: ["The ground, the ladder's condition and your route", "Only the top rung", "Nothing — climb straight away"], a: 0,
+        why: "A 30-second pre-climb check prevents most ladder falls." }
+    ]
+  }
+};
+
+/* ================= STATE ================= */
+let state = { module: null, stepIdx: 0, stepScore: 0, qIdx: 0, qScore: 0, timer: null };
+const completed = {};
+const HOTSPOTS = [ { x: 12, y: 52 }, { x: 47, y: 38 }, { x: 80, y: 55 } ];
+
+/* ================= NAV ================= */
+function goTo(id) {
+    clearInterval(state.timer);
+    document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
+    document.getElementById(id).classList.remove("hidden");
+    window.scrollTo(0, 0);
+}
+function signIn() {
+    const btn = document.getElementById("loginBtn");
+    btn.textContent = "Signing in…"; btn.disabled = true;
+    setTimeout(() => {
+        btn.textContent = "Sign In"; btn.disabled = false;
+        document.getElementById("chipUser").classList.remove("hidden");
+        goTo("hub"); hubIntro();
+    }, 700);
+}
+function hubIntro() {
+    const n = Object.keys(completed).length;
+    const t = document.getElementById("bubble");
+    t.textContent = n === 0
+        ? "Welcome, Ramesh! Pick a door and I'll brief you on the module."
+        : n < 3
+        ? `Nice work — ${n} of 3 modules done. Ready for the next door?`
+        : "All three modules complete. Outstanding work, Ramesh! 🎉";
+    document.getElementById("hubProgress").textContent =
+        `Modules completed: ${n} / 3 — ` + (n < 3 ? "complete all three to receive your Safety Certificate." : "all modules complete! 🎉");
+    document.getElementById("chipProgress").textContent = `Modules: ${n}/3`;
+    for (const k of Object.keys(MODULES))
+        document.getElementById("done-" + k).classList.toggle("hidden", !completed[k]);
+}
+
+/* ================= MODULE / SCENE ================= */
+function startModule(key) {
+    state = { module: key, stepIdx: 0, stepScore: 0, qIdx: 0, qScore: 0, timer: null };
+    const m = MODULES[key];
+    document.getElementById("sceneTitle").textContent = "360° Module Scene — " + m.title;
+    document.getElementById("sceneBrief").textContent = m.brief;
+    renderHotspots();
+    goTo("scene");
+    nextStep();
+}
+function renderHotspots() {
+    const pano = document.getElementById("pano");
+    pano.querySelectorAll(".hotspot").forEach(e => e.remove());
+    HOTSPOTS.forEach((h, i) => {
+        const d = document.createElement("div");
+        d.className = "hotspot"; d.textContent = i + 1;
+        d.style.left = h.x + "%"; d.style.top = h.y + "%";
+        d.onclick = (ev) => { ev.stopPropagation(); stepClick(d); };
+        pano.appendChild(d);
+    });
+}
+function nextStep() {
+    const m = MODULES[state.module];
+    document.getElementById("stepCount").textContent =
+        state.stepIdx >= m.steps.length ? "Practical complete — starting quiz…"
+        : `Checkpoint ${state.stepIdx + 1} of ${m.steps.length}`;
+    if (state.stepIdx >= m.steps.length) { setTimeout(startQuiz, 700); return; }
+    const slot = document.getElementById("stepPanelSlot");
+    if (m.mode === "spot") {
+        slot.innerHTML = `<div class="step-panel"><h4>Checkpoint ${state.stepIdx + 1}: look at marker ${state.stepIdx + 1}</h4>
+            <p class="sub">Find and confirm the hazard: <strong>${m.steps[state.stepIdx].label}</strong></p>
+            <button onclick="confirmSpot()">✓ I have inspected this hazard</button>
+            <div class="feedback" id="stepFb"></div></div>`;
+    } else {
+        const s = m.steps[state.stepIdx];
+        slot.innerHTML = `<div class="step-panel"><h4>Checkpoint ${state.stepIdx + 1} — ${s.prompt}</h4>
+            ${s.opts.map((o, i) => `<button class="opt" onclick="stepAnswer(${i})">${o}</button>`).join("")}
+            <div class="feedback" id="stepFb"></div></div>`;
+    }
+}
+function stepClick(el) {
+    if (el.classList.contains("found")) return;
+    // marker must be clicked in order
+    const stepPanel = document.querySelector(".step-panel");
+    if (!stepPanel) return;
+}
+function confirmSpot() {
+    const marks = document.querySelectorAll(".hotspot");
+    marks[state.stepIdx].classList.add("found");
+    marks[state.stepIdx].textContent = "✓";
+    const fb = document.getElementById("stepFb");
+    fb.textContent = "✔ Hazard recorded (20 marks)";
+    fb.className = "feedback ok";
+    state.stepScore += 20;
+    setTimeout(() => { state.stepIdx++; nextStep(); }, 700);
+}
+function stepAnswer(i) {
+    const m = MODULES[state.module], s = m.steps[state.stepIdx];
+    const opts = document.querySelectorAll(".step-panel .opt");
+    opts.forEach(o => o.disabled = true);
+    const fb = document.getElementById("stepFb");
+    const ok = i === s.a;
+    opts[i].classList.add(ok ? "correct" : "wrong");
+    if (!ok) opts[s.a].classList.add("correct");
+    fb.textContent = (ok ? "✔ Correct (20 marks) — " : "✘ Not quite — the safe answer is highlighted. ") + s.why;
+    fb.className = "feedback " + (ok ? "ok" : "bad");
+    if (ok) state.stepScore += 20;
+    setTimeout(() => { state.stepIdx++; nextStep(); }, 1600);
+}
+
+/* ================= QUIZ ================= */
+function startQuiz() {
+    state.qIdx = 0; state.qScore = 0;
+    goTo("quiz");
+    nextQuestion();
+}
+function nextQuestion() {
+    const m = MODULES[state.module];
+    if (state.qIdx >= m.quiz.length) { showResult(); return; }
+    const q = m.quiz[state.qIdx];
+    document.getElementById("qMeta").textContent = `Question ${state.qIdx + 1} of ${m.quiz.length} · 10 marks`;
+    document.getElementById("qText").textContent = q.q;
+    document.getElementById("qFeedback").textContent = "";
+    document.getElementById("qFeedback").className = "feedback";
+    document.getElementById("qOptions").innerHTML =
+        q.opts.map((o, i) => `<button class="opt" onclick="quizAnswer(${i})">${o}</button>`).join("");
+    // 20s timer bar
+    const fill = document.getElementById("timerFill");
+    fill.style.transition = "none"; fill.style.width = "100%";
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        fill.style.transition = "width 20s linear"; fill.style.width = "0%";
+    }));
+    clearInterval(state.timer);
+    state.timer = setTimeout(() => quizAnswer(-1), 20000);
+}
+function quizAnswer(i) {
+    const m = MODULES[state.module], q = m.quiz[state.qIdx];
+    clearInterval(state.timer);
+    const opts = document.querySelectorAll("#qOptions .opt");
+    opts.forEach(o => o.disabled = true);
+    const fb = document.getElementById("qFeedback");
+    const ok = i === q.a;
+    if (i >= 0) opts[i].classList.add(ok ? "correct" : "wrong");
+    if (!ok) opts[q.a].classList.add("correct");
+    fb.textContent = (ok ? "✔ Correct (10 marks) — " : "✘ Time/answer — the correct one is highlighted. ") + q.why;
+    fb.className = "feedback " + (ok ? "ok" : "bad");
+    if (ok) state.qScore += 10;
+    setTimeout(() => { state.qIdx++; nextQuestion(); }, 1600);
+}
+
+/* ================= RESULT / CERT ================= */
+function showResult() {
+    const m = MODULES[state.module];
+    const total = state.stepScore + state.qScore;
+    const pass = total >= 70;
+    document.getElementById("resScore").textContent = total + " / 100";
+    document.getElementById("resBreak").textContent =
+        `Practical ${state.stepScore}/60 · Quiz ${state.qScore}/40 — pass mark 70/100`;
+    document.getElementById("resTag").innerHTML = pass
+        ? '<span class="pass-tag">✔ PASSED</span>'
+        : '<span class="fail-tag">✘ NOT PASSED — retake available</span>';
+    document.getElementById("resNote").textContent = pass
+        ? "Your score is saved to your progress record. Best assessed score is kept."
+        : "Score below 70%: retake the module as many times as needed — the best score is kept.";
+    document.getElementById("resultCard").className = "result-card " + (pass ? "pass" : "fail");
+    document.getElementById("btnCert").classList.toggle("hidden", !pass);
+    document.getElementById("btnRetake").classList.toggle("hidden", pass);
+    document.getElementById("chipScore").textContent = `Score: ${total}/100`;
+    if (pass) {
+        completed[state.module] = true;
+        document.getElementById("certModule").textContent = m.title;
+        document.getElementById("certScore").textContent = total + " / 100";
+        document.getElementById("certResult").textContent = "Passed (≥ 70%)";
+        document.getElementById("certDate").textContent = new Date().toLocaleDateString("en-NZ", { day: "numeric", month: "long", year: "numeric" });
+    }
+    goTo("result");
+}
+
+/* ================= 360 PAN ================= */
+const wrap = document.getElementById("sceneWrap"), pano = document.getElementById("pano");
+let pan = 0, panning = false, startX = 0, startPan = 0;
+function maxPan() { return pano.offsetWidth - wrap.offsetWidth; }
+wrap.addEventListener("pointerdown", e => {
+    if (e.target.closest(".hotspot, .step-panel")) return;
+    panning = true; startX = e.clientX; startPan = pan;
+});
+window.addEventListener("pointermove", e => {
+    if (!panning) return;
+    pan = Math.max(0, Math.min(maxPan(), startPan - (e.clientX - startX)));
+    pano.style.transform = `translateX(${-pan}px)`;
+});
+window.addEventListener("pointerup", () => panning = false);
+</script>
+</body>
+</html>

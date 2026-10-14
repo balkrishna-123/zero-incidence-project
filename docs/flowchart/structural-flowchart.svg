@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="2830" viewBox="0 0 1080 2830" font-family="Segoe UI, Arial, Helvetica, sans-serif">
+<rect width="1080" height="2830" fill="#ffffff"/>
+<defs><marker id="ah" markerWidth="9" markerHeight="8" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#333333"/></marker></defs>
+<text x="20" y="30" font-size="18" font-weight="700" fill="#12303a">Structural Flowchart — Zero Incident (Safety Training Simulator)</text>
+<text x="20" y="48" font-size="11.5" fill="#5a7680">Complete program flow: login → validation → session → role split → 3D hub → module → quiz → result → certificate</text>
+<line x1="20" y1="56" x2="1060" y2="56" stroke="#c9d8dc" stroke-width="1"/>
+<circle cx="480" cy="788" r="4" fill="#333333"/>
+<rect x="390.0" y="60.0" width="180" height="48" rx="24.0" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="480" y="88" font-size="13" font-weight="700" fill="#1c2b33" text-anchor="middle">START</text>
+<rect x="280.0" y="148.0" width="400" height="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="172" font-size="12.5" fill="#1c2b33" text-anchor="middle">Initialize application —</text>
+<text x="480" y="188" font-size="12.5" fill="#1c2b33" text-anchor="middle">load config · connect MongoDB · start HTTP server</text>
+<polygon points="320.0,244.0 660.0,244.0 640.0,292.0 300.0,292.0" fill="#e3f2fd" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="272" font-size="12.5" fill="#1c2b33" text-anchor="middle">Display login screen</text>
+<polygon points="320.0,332.0 660.0,332.0 640.0,380.0 300.0,380.0" fill="#e3f2fd" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="360" font-size="12.5" fill="#1c2b33" text-anchor="middle">Enter username &amp; password</text>
+<rect x="280.0" y="420.0" width="400" height="48" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="448" font-size="12.5" fill="#1c2b33" text-anchor="middle">Verify credentials against D1 (User Accounts)</text>
+<polygon points="480,508.0 620.0,563 480,618.0 340.0,563" fill="#fff8e1" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="559" font-size="12.5" font-weight="700" fill="#1c2b33" text-anchor="middle">Credentials</text>
+<text x="480" y="575" font-size="12.5" font-weight="700" fill="#1c2b33" text-anchor="middle">valid?</text>
+<polygon points="480,658.0 630.0,713 480,768.0 330.0,713" fill="#fff8e1" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="709" font-size="12.5" font-weight="700" fill="#1c2b33" text-anchor="middle">New password required?</text>
+<text x="480" y="725" font-size="12.5" font-weight="700" fill="#1c2b33" text-anchor="middle">(first login)?</text>
+<rect x="280.0" y="808.0" width="400" height="48" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="836" font-size="12.5" fill="#1c2b33" text-anchor="middle">Create secure session — cookie + CSRF token</text>
+<polygon points="480,896.0 600.0,951 480,1006.0 360.0,951" fill="#fff8e1" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="955" font-size="12.5" font-weight="700" fill="#1c2b33" text-anchor="middle">User role?</text>
+<rect x="280.0" y="1044.0" width="400" height="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="1068" font-size="12.5" fill="#1c2b33" text-anchor="middle">Load training hub — 360° warehouse:</text>
+<text x="480" y="1084" font-size="12.5" fill="#1c2b33" text-anchor="middle">module overview (D2) + progress (D4)</text>
+<polygon points="320.0,1142.0 660.0,1142.0 640.0,1190.0 300.0,1190.0" fill="#e3f2fd" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="1170" font-size="12.5" fill="#1c2b33" text-anchor="middle">Display 3D hub — trainer introduces modules</text>
+<polygon points="480,1230.0 630.0,1285 480,1340.0 330.0,1285" fill="#fff8e1" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="1281" font-size="12.5" font-weight="700" fill="#1c2b33" text-anchor="middle">Employee selects</text>
+<text x="480" y="1297" font-size="12.5" font-weight="700" fill="#1c2b33" text-anchor="middle">a module?</text>
+<rect x="280.0" y="1380.0" width="400" height="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="1404" font-size="12.5" fill="#1c2b33" text-anchor="middle">Enter module room — load content</text>
+<text x="480" y="1420" font-size="12.5" fill="#1c2b33" text-anchor="middle">and 3D assets (D2)</text>
+<polygon points="300.0,1476.0 680.0,1476.0 660.0,1532.0 280.0,1532.0" fill="#e3f2fd" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="1500" font-size="12.5" fill="#1c2b33" text-anchor="middle">Deliver 3D/360° scene: briefing +</text>
+<text x="480" y="1516" font-size="12.5" fill="#1c2b33" text-anchor="middle">practical activity</text>
+<polygon points="480,1572.0 640.0,1627 480,1682.0 320.0,1627" fill="#fff8e1" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="1623" font-size="12.5" font-weight="700" fill="#1c2b33" text-anchor="middle">Practical activity</text>
+<text x="480" y="1639" font-size="12.5" font-weight="700" fill="#1c2b33" text-anchor="middle">completed?</text>
+<rect x="280.0" y="1722.0" width="400" height="48" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="1750" font-size="12.5" fill="#1c2b33" text-anchor="middle">Fetch quiz questions &amp; correct answers (D3)</text>
+<polygon points="310.0,1810.0 670.0,1810.0 650.0,1858.0 290.0,1858.0" fill="#e3f2fd" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="1838" font-size="12.5" fill="#1c2b33" text-anchor="middle">Display quiz questions (knowledge check)</text>
+<polygon points="310.0,1898.0 670.0,1898.0 650.0,1946.0 290.0,1946.0" fill="#e3f2fd" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="1926" font-size="12.5" fill="#1c2b33" text-anchor="middle">Employee submits answers</text>
+<rect x="280.0" y="1986.0" width="400" height="48" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="2014" font-size="12.5" fill="#1c2b33" text-anchor="middle">Calculate score &amp; result (pass mark ≥ 70%)</text>
+<rect x="280.0" y="2074.0" width="400" height="48" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="2102" font-size="12.5" fill="#1c2b33" text-anchor="middle">Save attempt — update progress &amp; scores (D4)</text>
+<polygon points="480,2162.0 610.0,2217 480,2272.0 350.0,2217" fill="#fff8e1" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="2221" font-size="12.5" font-weight="700" fill="#1c2b33" text-anchor="middle">Score ≥ 70%?</text>
+<polygon points="480,2312.0 640.0,2367 480,2422.0 320.0,2367" fill="#fff8e1" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="2363" font-size="12.5" font-weight="700" fill="#1c2b33" text-anchor="middle">All 3 modules</text>
+<text x="480" y="2379" font-size="12.5" font-weight="700" fill="#1c2b33" text-anchor="middle">passed?</text>
+<rect x="280.0" y="2468.0" width="400" height="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="2492" font-size="12.5" fill="#1c2b33" text-anchor="middle">Generate completion certificate (PDF)</text>
+<text x="480" y="2508" font-size="12.5" fill="#1c2b33" text-anchor="middle">— save to D5</text>
+<polygon points="320.0,2560.0 660.0,2560.0 640.0,2608.0 300.0,2608.0" fill="#e3f2fd" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="2588" font-size="12.5" fill="#1c2b33" text-anchor="middle">Display &amp; download certificate</text>
+<rect x="300.0" y="2648.0" width="360" height="48" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="480" y="2676" font-size="12.5" fill="#1c2b33" text-anchor="middle">Destroy session (sign out)</text>
+<rect x="390.0" y="2732.0" width="180" height="48" rx="24.0" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="480" y="2760" font-size="13" font-weight="700" fill="#1c2b33" text-anchor="middle">END</text>
+<polygon points="810.0,430.0 1020.0,430.0 1000.0,482.0 790.0,482.0" fill="#e3f2fd" stroke="#12303a" stroke-width="2"/>
+<text x="905" y="460" font-size="12.5" fill="#1c2b33" text-anchor="middle">Show error message</text>
+<polygon points="810.0,689.0 1020.0,689.0 1000.0,737.0 790.0,737.0" fill="#e3f2fd" stroke="#12303a" stroke-width="2"/>
+<text x="905" y="717" font-size="12.5" fill="#1c2b33" text-anchor="middle">Enter new password</text>
+<rect x="790.0" y="777.0" width="230" height="48" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="905" y="805" font-size="12.5" fill="#1c2b33" text-anchor="middle">Update password in D1</text>
+<rect x="790.0" y="923.0" width="230" height="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="905" y="947" font-size="12.5" fill="#1c2b33" text-anchor="middle">Manage users (add/update/delete)</text>
+<text x="905" y="963" font-size="12.5" fill="#1c2b33" text-anchor="middle">— D1 User Accounts</text>
+<rect x="790.0" y="1019.0" width="230" height="48" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="905" y="1047" font-size="12.5" fill="#1c2b33" text-anchor="middle">Destroy session (sign out)</text>
+<rect x="845.0" y="1097.0" width="120" height="48" rx="24.0" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="905" y="1125" font-size="13" font-weight="700" fill="#1c2b33" text-anchor="middle">END</text>
+<polygon points="70.0,2193.0 250.0,2193.0 230.0,2241.0 50.0,2241.0" fill="#e3f2fd" stroke="#12303a" stroke-width="2"/>
+<text x="150" y="2213" font-size="12.5" fill="#1c2b33" text-anchor="middle">Show result —</text>
+<text x="150" y="2229" font-size="12.5" fill="#1c2b33" text-anchor="middle">retake available</text>
+<polygon points="150,2293.0 225.0,2335 150,2377.0 75.0,2335" fill="#fff8e1" stroke="#12303a" stroke-width="2"/>
+<text x="150" y="2339" font-size="12.5" font-weight="700" fill="#1c2b33" text-anchor="middle">Retake now?</text>
+<polyline points="480,108 480,148" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,204 480,244" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,292 480,332" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,380 480,420" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,468 480,508" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,618 480,658" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,768 480,808" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,856 480,896" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,1006 480,1044" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,1100 480,1142" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,1190 480,1230" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,1340 480,1380" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,1436 480,1476" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,1532 480,1572" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,1682 480,1722" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,1770 480,1810" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,1858 480,1898" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,1946 480,1986" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,2034 480,2074" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,2122 480,2162" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,2272 480,2312" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,2422 480,2468" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,2524 480,2560" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,2608 480,2648" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="480,2696 480,2732" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="620,563 905,563 905,482" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="905,430 905,356 660,356" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="630,713 790,713" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="905,737 905,777" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="905,825 905,788 480,788" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="600,951 790,951" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="905,979 905,1019" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="905,1067 905,1097" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="330,1285 150,1285 150,1156 300,1156" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="640,1627 740,1627 740,1504 660,1504" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="350,2217 250,2217" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="150,2241 150,2293" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="75,2335 30,2335 30,1746 280,1746" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="150,2377 150,2450 265,2450 265,1176 300,1176" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="640,2367 720,2367 720,1186 660,1186" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="496" y="640" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="start">Yes</text>
+<text x="496" y="640" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="start">Yes</text>
+<text x="496" y="788" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="start">No</text>
+<text x="496" y="788" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="start">No</text>
+<text x="496" y="1030" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="start">Employee</text>
+<text x="496" y="1030" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="start">Employee</text>
+<text x="496" y="1362" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="start">Yes</text>
+<text x="496" y="1362" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="start">Yes</text>
+<text x="496" y="1704" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="start">Yes</text>
+<text x="496" y="1704" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="start">Yes</text>
+<text x="496" y="2294" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="start">Yes</text>
+<text x="496" y="2294" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="start">Yes</text>
+<text x="496" y="2444" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="start">Yes</text>
+<text x="496" y="2444" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="start">Yes</text>
+<text x="700" y="553" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">No</text>
+<text x="700" y="553" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="middle">No</text>
+<text x="700" y="703" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Yes</text>
+<text x="700" y="703" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="middle">Yes</text>
+<text x="695" y="941" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Administrator</text>
+<text x="695" y="941" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="middle">Administrator</text>
+<text x="240" y="1275" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">No</text>
+<text x="240" y="1275" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="middle">No</text>
+<text x="688" y="1617" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">No</text>
+<text x="688" y="1617" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="middle">No</text>
+<text x="300" y="2207" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">No</text>
+<text x="300" y="2207" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="middle">No</text>
+<text x="50" y="2325" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Yes</text>
+<text x="50" y="2325" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="middle">Yes</text>
+<text x="162" y="2415" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="start">No</text>
+<text x="162" y="2415" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="start">No</text>
+<text x="676" y="2357" font-size="11.5" font-weight="700" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">No</text>
+<text x="676" y="2357" font-size="11.5" font-weight="700" fill="#0b5d4e" text-anchor="middle">No</text>
+<text x="20" y="2818" font-size="10.5" fill="#5a7680">Legend:  stadium = start/end · rectangle = process · parallelogram = input/output · rhombus = decision (Yes/No) · D1–D5 = data stores (see DFD)
+</text>
+</svg>

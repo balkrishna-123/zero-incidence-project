@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640" font-family="Segoe UI, Arial, Helvetica, sans-serif">
+<rect width="1000" height="640" fill="#ffffff"/>
+<defs><marker id="ah" markerWidth="9" markerHeight="8" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#333333"/></marker><marker id="ahs" markerWidth="9" markerHeight="8" refX="1" refY="3.5" orient="auto"><path d="M9,0 L0,3.5 L9,7 z" fill="#333333"/></marker></defs>
+<text x="16" y="30" font-size="17" font-weight="700" fill="#12303a">Level 2 — Decomposition of 5.0 Calculate Score &amp; Results</text>
+<text x="16" y="47" font-size="11.5" fill="#5a7680">Zero Incident — Safety Training Simulator · Data Flow Diagram</text>
+<line x1="16" y1="55" x2="984" y2="55" stroke="#c9d8dc" stroke-width="1"/>
+<polyline points="154,140 275,205" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="355,100 320,196" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="364,250 506,250" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="614,250 766,250" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="792,302 550,450" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="840,302 812,450" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="592,196 770,100" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="874,250 985,250" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<circle cx="110" cy="120" r="44" fill="#eef5f2" stroke="#12303a" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="110" y="110.5" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">4.0</text>
+<text x="110" y="125.5" font-size="12" fill="#1c2b33" text-anchor="middle">Conduct Quiz</text>
+<path d="M 250,44 H 460 V 100 H 250" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="254" y="39" font-size="12" font-weight="800" fill="#087f68">D3</text>
+<text x="363.0" y="69.0" font-size="12" fill="#1c2b33" text-anchor="middle">Quiz Questions &amp;</text>
+<text x="363.0" y="83.0" font-size="12" fill="#1c2b33" text-anchor="middle">Answers</text>
+<rect x="680" y="44" width="180" height="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="770.0" y="76.0" font-size="12.5" font-weight="600" fill="#1c2b33" text-anchor="middle">Employee / Learner</text>
+<circle cx="310" cy="250" r="54" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="310" y="234.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">5.1</text>
+<text x="310" y="249.0" font-size="12" fill="#1c2b33" text-anchor="middle">Grade Submitted</text>
+<text x="310" y="262.0" font-size="12" fill="#1c2b33" text-anchor="middle">Answers</text>
+<circle cx="560" cy="250" r="54" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="560" y="234.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">5.2</text>
+<text x="560" y="249.0" font-size="12" fill="#1c2b33" text-anchor="middle">Calculate Module</text>
+<text x="560" y="262.0" font-size="12" fill="#1c2b33" text-anchor="middle">Result</text>
+<circle cx="820" cy="250" r="54" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="820" y="234.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">5.3</text>
+<text x="820" y="249.0" font-size="12" fill="#1c2b33" text-anchor="middle">Update Progress &amp;</text>
+<text x="820" y="262.0" font-size="12" fill="#1c2b33" text-anchor="middle">Save Result</text>
+<path d="M 450,450 H 650 V 506 H 450" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="454" y="445" font-size="12" font-weight="800" fill="#087f68">D4</text>
+<text x="558.0" y="475.0" font-size="12" fill="#1c2b33" text-anchor="middle">User Progress &amp;</text>
+<text x="558.0" y="489.0" font-size="12" fill="#1c2b33" text-anchor="middle">Scores</text>
+<path d="M 710,450 H 910 V 506 H 710" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="714" y="445" font-size="12" font-weight="800" fill="#087f68">D5</text>
+<text x="818.0" y="475.0" font-size="12" fill="#1c2b33" text-anchor="middle">Results &amp;</text>
+<text x="818.0" y="489.0" font-size="12" fill="#1c2b33" text-anchor="middle">Certificates</text>
+<text x="230" y="152" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Submitted Answer Sheet</text>
+<text x="230" y="152" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Submitted Answer Sheet</text>
+<text x="400" y="145" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Correct Answers &amp;</text>
+<text x="400" y="145" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Correct Answers &amp;</text>
+<text x="400" y="159" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Marking Scheme</text>
+<text x="400" y="159" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Marking Scheme</text>
+<text x="435" y="236" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Raw Score</text>
+<text x="435" y="236" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Raw Score</text>
+<text x="690" y="233" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Final Result Data</text>
+<text x="690" y="233" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Final Result Data</text>
+<text x="690" y="247" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">(score, pass/retake, grade)</text>
+<text x="690" y="247" font-size="11.5" fill="#1a1a1a" text-anchor="middle">(score, pass/retake, grade)</text>
+<text x="648" y="377" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Update Progress &amp;</text>
+<text x="648" y="377" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Update Progress &amp;</text>
+<text x="648" y="391" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Scores</text>
+<text x="648" y="391" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Scores</text>
+<text x="852" y="380" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="start">Save Final Result</text>
+<text x="852" y="380" font-size="11.5" fill="#1a1a1a" text-anchor="start">Save Final Result</text>
+<text x="672" y="125" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Result Summary —</text>
+<text x="672" y="125" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Result Summary —</text>
+<text x="672" y="139" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Score &amp; Classification</text>
+<text x="672" y="139" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Score &amp; Classification</text>
+<text x="928" y="229" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Result Record</text>
+<text x="928" y="229" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Result Record</text>
+<text x="928" y="243" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">(-&gt; 6.0)</text>
+<text x="928" y="243" font-size="11.5" fill="#1a1a1a" text-anchor="middle">(-&gt; 6.0)</text>
+<text x="16" y="628" font-size="10.5" fill="#5a7680">Legend:  rectangle = external entity · circle = process · open bar = data store · dashed circle = sibling process from the parent Level 1 diagram · every arrow is a named data flow</text>
+</svg>

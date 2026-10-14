@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640" font-family="Segoe UI, Arial, Helvetica, sans-serif">
+<rect width="1000" height="640" fill="#ffffff"/>
+<defs><marker id="ah" markerWidth="9" markerHeight="8" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#333333"/></marker><marker id="ahs" markerWidth="9" markerHeight="8" refX="1" refY="3.5" orient="auto"><path d="M9,0 L0,3.5 L9,7 z" fill="#333333"/></marker></defs>
+<text x="16" y="30" font-size="17" font-weight="700" fill="#12303a">Level 2 — Decomposition of 1.0 Authenticate User</text>
+<text x="16" y="47" font-size="11.5" fill="#5a7680">Zero Incident — Safety Training Simulator · Data Flow Diagram</text>
+<line x1="16" y1="55" x2="984" y2="55" stroke="#c9d8dc" stroke-width="1"/>
+<polyline points="186,228 266,228" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="374,228 506,228" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="575,282 575,360 620,360 620,420" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="700,420 700,378 608,378 608,282" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="614,228 746,228" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="515,278 515,330 111,330 111,256" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="186,448 266,448" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="374,448 560,448" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="854,228 985,228" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<rect x="36" y="200" width="150" height="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="111.0" y="232.0" font-size="12.5" font-weight="600" fill="#1c2b33" text-anchor="middle">Employee / Learner</text>
+<rect x="36" y="420" width="150" height="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="111.0" y="452.0" font-size="12.5" font-weight="600" fill="#1c2b33" text-anchor="middle">Administrator</text>
+<circle cx="320" cy="228" r="54" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="320" y="212.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">1.1</text>
+<text x="320" y="227.0" font-size="12" fill="#1c2b33" text-anchor="middle">Receive Login</text>
+<text x="320" y="240.0" font-size="12" fill="#1c2b33" text-anchor="middle">Request</text>
+<circle cx="560" cy="228" r="54" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="560" y="212.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">1.2</text>
+<text x="560" y="227.0" font-size="12" fill="#1c2b33" text-anchor="middle">Validate</text>
+<text x="560" y="240.0" font-size="12" fill="#1c2b33" text-anchor="middle">Credentials</text>
+<circle cx="800" cy="228" r="54" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="800" y="212.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">1.3</text>
+<text x="800" y="227.0" font-size="12" fill="#1c2b33" text-anchor="middle">Create Secure</text>
+<text x="800" y="240.0" font-size="12" fill="#1c2b33" text-anchor="middle">Session</text>
+<circle cx="320" cy="448" r="54" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="320" y="432.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">1.4</text>
+<text x="320" y="447.0" font-size="12" fill="#1c2b33" text-anchor="middle">Manage User</text>
+<text x="320" y="460.0" font-size="12" fill="#1c2b33" text-anchor="middle">Accounts</text>
+<path d="M 560,420 H 750 V 476 H 560" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="564" y="415" font-size="12" font-weight="800" fill="#087f68">D1</text>
+<text x="663.0" y="452.0" font-size="12" fill="#1c2b33" text-anchor="middle">User Accounts</text>
+<text x="226" y="214" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Username &amp; Password</text>
+<text x="226" y="214" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Username &amp; Password</text>
+<text x="440" y="214" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Login Request</text>
+<text x="440" y="214" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Login Request</text>
+<text x="565" y="352" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="end">Lookup User Record</text>
+<text x="565" y="352" font-size="11.5" fill="#1a1a1a" text-anchor="end">Lookup User Record</text>
+<text x="660" y="396" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Stored Credentials &amp; Flags</text>
+<text x="660" y="396" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Stored Credentials &amp; Flags</text>
+<text x="680" y="214" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Verified User Data</text>
+<text x="680" y="214" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Verified User Data</text>
+<text x="300" y="322" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Login Error / Message</text>
+<text x="300" y="322" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Login Error / Message</text>
+<text x="226" y="434" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Add / Update / Delete</text>
+<text x="226" y="434" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Add / Update / Delete</text>
+<text x="467" y="434" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Create / Update / Delete User</text>
+<text x="467" y="434" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Create / Update / Delete User</text>
+<text x="985" y="205" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="end">Authenticated User + Session</text>
+<text x="985" y="205" font-size="11.5" fill="#1a1a1a" text-anchor="end">Authenticated User + Session</text>
+<text x="985" y="219" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="end">(-&gt; 2.0 Manage Training Hub)</text>
+<text x="985" y="219" font-size="11.5" fill="#1a1a1a" text-anchor="end">(-&gt; 2.0 Manage Training Hub)</text>
+<text x="16" y="628" font-size="10.5" fill="#5a7680">Legend:  rectangle = external entity · circle = process · open bar = data store · dashed circle = sibling process from the parent Level 1 diagram · every arrow is a named data flow</text>
+</svg>

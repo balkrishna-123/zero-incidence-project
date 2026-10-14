@@ -1,0 +1,251 @@
+@startuml zero-incident-class-diagram
+title Zero Incident - Class Diagram (release 1.5.0)
+
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #475569
+  ArrowColor #334155
+}
+skinparam PackageBackgroundColor #F8FAFC
+skinparam PackageBorderColor #94A3B8
+
+package "Data Models - Mongoose / MongoDB" {
+
+  class User <<model>> {
+    + firstName : String
+    + lastName : String
+    + age : Number (16..100)
+    + employeeNumber : String  {unique, sparse}
+    + username : String  {unique, lowercase}
+    + passwordHash : String  {select: false}
+    + role : enum {admin, employee}
+    + status : enum {active, inactive}
+    + mustChangePassword : Boolean
+    + sessionVersion : Number
+    + lastLoginAt : Date
+    + passwordChangedAt : Date
+    + isDemo : Boolean
+    + createdAt / updatedAt : timestamps
+    --
+    + create()
+    + findOne()
+    + findById()
+    + find()
+    + exists()
+    + updateOne()
+    + countDocuments()
+    + deleteOne()
+  }
+
+  class Trainer <<model>> {
+    + firstName : String
+    + lastName : String
+    + nickname : String
+    + nicknameKey : String  {unique}
+    + age : Number (16..100)
+    + imageUrl : String
+    + introduction : String (<=600)
+    + status : enum {active, inactive}
+    --
+    + create()
+    + find()
+    + findById()
+    + exists()
+    + deleteOne()
+  }
+
+  class Module <<model>> {
+    + key : enum MODULE_KEYS  {unique}
+    + title : String
+    + description : String
+    + objectives : [String]
+    + rules : [String]
+    + trainerId : ObjectId  {ref: Trainer}
+    --
+    + find()
+    + findOne()
+    + updateOne()
+    + updateMany()
+  }
+
+  class Progress <<model>> {
+    + employeeId : ObjectId  {ref: User}
+    + moduleKey : enum MODULE_KEYS
+    + score : Number (0..100)
+    + attempts : Number
+    + assessedAt : Date
+    + bestAttemptId : ObjectId  {ref: TrainingAttempt}
+    + activityScore : Number (0..70)
+    + quizScore : Number (0..30)
+    + lastScore : Number
+    + lastAssessedAt : Date
+    + source : enum {demo, assessment}
+    --
+    + create()
+    + find()
+    + findOne()
+    + updateOne()
+    + deleteMany()
+    --
+    {static} progressSummary(rows)
+  }
+
+  class TrainingAttempt <<model>> {
+    + employeeId : ObjectId  {ref: User, indexed}
+    + moduleKey : enum MODULE_KEYS
+    + version : String
+    + phase : enum {activity, quiz-ready, quiz, feedback, completed}
+    + open : Boolean
+    + activityAnswers : [ActivityAnswer]
+    + inspected : [String]
+    + classifications : [AreaClassification]
+    + selectedObjectId : String
+    + safeFindings : [String]
+    + selectedTaskId : String
+    + quizOrder : [String]
+    + optionOrders : Map<String, [String]>
+    + quizAnswers : [QuizAnswer]
+    + questionStartedAt : Date
+    + questionDeadline : Date
+    + activityScore : Number (0..70)
+    + quizScore : Number (0..30)
+    + score : Number (0..100)
+    + completedAt : Date
+    + recordedAt : Date
+    --
+    + create()
+    + find()
+    + findOne()
+    + updateOne()
+    + countDocuments()
+    + deleteMany()
+  }
+
+  class Certificate <<model>> {
+    + employeeId : ObjectId  {ref: User, immutable}
+    + programVersion : String  {immutable}
+    + programTitle : String  {immutable}
+    + certificateId : String  {unique, immutable}
+    + employeeName : String  {immutable}
+    + employeeIdentifier : String  {immutable}
+    + identifierLabel : String  {immutable}
+    + demoLearner : Boolean  {immutable}
+    + modules : [ModuleSnapshot]  {immutable}
+    + overallScore : Number (70..100)  {immutable}
+    + completedAt : Date  {immutable}
+    + issuedAt : Date  {immutable}
+    + timeZone : String  {immutable}
+    + issuedBy : ObjectId  {ref: User, immutable}
+    + issuedByRole : enum {admin, employee}  {immutable}
+    + snapshotDigest : String  {immutable}
+    --
+    + create()
+    + find()
+    + findOne()
+    + deleteMany()
+  }
+
+  class Counter <<model>> {
+    + _id : String
+    + value : Number  (default 1000)
+    --
+    + findOneAndUpdate()
+    --
+    {static} nextEmployeeNumber()
+  }
+
+  class Audit <<model>> {
+    + actorId : ObjectId  {ref: User}
+    + actorName : String
+    + action : String
+    + subject : String
+    + createdAt : Date  {indexed}
+    --
+    + create()
+    + find()
+  }
+}
+
+package "Embedded Schemas (sub-documents)" {
+
+  class ActivityAnswer <<embed>> {
+    + taskId : String
+    + optionId : String
+    + correct : Boolean
+    + identificationCorrect : Boolean
+    + answeredAt : Date
+  }
+
+  class QuizAnswer <<embed>> {
+    + questionId : String
+    + optionId : String
+    + correct : Boolean
+    + timedOut : Boolean
+    + answeredAt : Date
+  }
+
+  class AreaClassification <<embed>> {
+    + objectId : String
+    + flagged : Boolean
+    + correct : Boolean
+    + classifiedAt : Date
+  }
+
+  class ModuleSnapshot <<embed>> {
+    + key : String
+    + title : String
+    + version : String
+    + attemptId : ObjectId
+    + score : Number (70..100)
+    + activityScore : Number
+    + quizScore : Number
+    + assessedAt : Date
+    + firstPassedAt : Date
+    + evidenceDigest : String
+  }
+}
+
+package "Error Classes" {
+  class Error <<JS built-in>> {
+    {abstract}
+  }
+  class HttpError <<server>> {
+    .. extends Error ..
+  }
+  class ApiError <<frontend>> {
+    .. extends Error ..
+  }
+}
+
+' --- Reference relationships (Mongoose ObjectId refs) ---
+User          "1"      ..> "*"       Progress        : employeeId
+User          "1"      ..> "*"       TrainingAttempt : employeeId
+User          "1"      ..> "*"       Certificate     : employeeId
+User          "1"      ..> "*"       Audit           : actorId
+User          "0..1"   ..> "0..*"    Certificate     : issuedBy
+Trainer       "1"      ..> "0..*"    Module          : trainerId
+Progress      "*"      ..> "0..1"    TrainingAttempt : bestAttemptId
+
+' --- Composition (embedded sub-documents) ---
+TrainingAttempt "1" *-- "0..*" ActivityAnswer     : activityAnswers
+TrainingAttempt "1" *-- "0..*" QuizAnswer         : quizAnswers
+TrainingAttempt "1" *-- "0..*" AreaClassification : classifications
+Certificate     "1" *-- "0..*" ModuleSnapshot     : modules
+
+' --- Inheritance ---
+Error <|-- HttpError
+Error <|-- ApiError
+
+note bottom of Counter
+  Atomic counter that mints
+  employee numbers: ZI-<year>-<seq>
+end note
+
+note bottom of User
+  Helper: safeUser(u) -
+  strips passwordHash for safe
+  API responses
+end note
+
+@enduml

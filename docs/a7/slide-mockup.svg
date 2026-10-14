@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="560" viewBox="0 0 880 560" font-family="Helvetica, Arial, sans-serif">
+  <!-- card -->
+  <rect x="4" y="4" width="872" height="552" rx="18" fill="#ffffff" stroke="#0f766e" stroke-width="3"/>
+  <!-- room background -->
+  <rect x="24" y="24" width="832" height="452" rx="12" fill="#e9f1f8"/>
+  <!-- back wall -->
+  <rect x="70" y="56" width="740" height="280" rx="8" fill="#eef4f9" stroke="#b7c7d6" stroke-width="2.5"/>
+  <!-- windows -->
+  <rect x="110" y="86" width="64" height="58" rx="6" fill="#cfe8f7" stroke="#9fb2c4" stroke-width="3"/>
+  <rect x="706" y="86" width="64" height="58" rx="6" fill="#cfe8f7" stroke="#9fb2c4" stroke-width="3"/>
+  <!-- floor -->
+  <polygon points="24,476 856,476 810,336 70,336" fill="#b9c8d8"/>
+  <polygon points="24,476 856,476 856,500 24,500" fill="#9fb2c4" opacity="0.55"/>
+  <g stroke="#ffffff" stroke-width="2" opacity="0.5">
+    <line x1="220" y1="476" x2="262" y2="336"/>
+    <line x1="440" y1="476" x2="440" y2="336"/>
+    <line x1="660" y1="476" x2="618" y2="336"/>
+  </g>
+  <!-- doors -->
+  <g>
+    <rect x="150" y="176" width="128" height="160" rx="10" fill="#c89a6b" stroke="#7c5a36" stroke-width="3"/>
+    <rect x="164" y="190" width="100" height="44" rx="6" fill="#fff8ee" stroke="#7c5a36" stroke-width="2"/>
+    <text x="214" y="209" font-size="14" font-weight="800" fill="#4a3218" text-anchor="middle">Hazard</text>
+    <text x="214" y="226" font-size="14" font-weight="800" fill="#4a3218" text-anchor="middle">Perception</text>
+    <circle cx="262" cy="270" r="5" fill="#f2d8b0" stroke="#6b4a2a" stroke-width="2"/>
+  </g>
+  <g>
+    <rect x="376" y="176" width="128" height="160" rx="10" fill="#c89a6b" stroke="#7c5a36" stroke-width="3"/>
+    <rect x="390" y="190" width="100" height="44" rx="6" fill="#fff8ee" stroke="#7c5a36" stroke-width="2"/>
+    <text x="440" y="209" font-size="14" font-weight="800" fill="#4a3218" text-anchor="middle">Manual</text>
+    <text x="440" y="226" font-size="14" font-weight="800" fill="#4a3218" text-anchor="middle">Handling</text>
+    <circle cx="488" cy="270" r="5" fill="#f2d8b0" stroke="#6b4a2a" stroke-width="2"/>
+  </g>
+  <g>
+    <rect x="602" y="176" width="128" height="160" rx="10" fill="#c89a6b" stroke="#7c5a36" stroke-width="3"/>
+    <rect x="616" y="190" width="100" height="44" rx="6" fill="#fff8ee" stroke="#7c5a36" stroke-width="2"/>
+    <text x="666" y="209" font-size="14" font-weight="800" fill="#4a3218" text-anchor="middle">Working at</text>
+    <text x="666" y="226" font-size="14" font-weight="800" fill="#4a3218" text-anchor="middle">Height</text>
+    <circle cx="714" cy="270" r="5" fill="#f2d8b0" stroke="#6b4a2a" stroke-width="2"/>
+  </g>
+  <!-- trainer -->
+  <g>
+    <circle cx="96" cy="392" r="17" fill="#fcd9b8" stroke="#8a5a34" stroke-width="2"/>
+    <path d="M 74 452 q 0 -44 22 -44 q 22 0 22 44 z" fill="#0f766e" stroke="#0b5a54" stroke-width="2"/>
+    <rect x="70" y="458" width="52" height="18" rx="9" fill="#0f172a"/>
+    <text x="96" y="471" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">TRAINER</text>
+  </g>
+  <!-- speech bubble -->
+  <g>
+    <rect x="130" y="368" width="330" height="66" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2.5"/>
+    <polygon points="128,392 146,384 146,402" fill="#ffffff" stroke="#0f766e" stroke-width="2.5"/>
+    <text x="146" y="394" font-size="14.5" font-weight="700" fill="#0f172a">Welcome, Ramesh! Pick a door and</text>
+    <text x="146" y="416" font-size="14.5" font-weight="700" fill="#0f172a">I&#8217;ll brief you on the module.</text>
+  </g>
+  <!-- HUD chips -->
+  <g font-size="12" font-weight="700">
+    <rect x="560" y="34" width="64" height="24" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="592" y="50" fill="#334155" text-anchor="middle">Profile</text>
+    <rect x="632" y="34" width="86" height="24" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="675" y="50" fill="#334155" text-anchor="middle">My Progress</text>
+    <rect x="726" y="34" width="94" height="24" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="773" y="50" fill="#334155" text-anchor="middle">Certificates</text>
+  </g>
+  <!-- progress pill -->
+  <g>
+    <rect x="250" y="506" width="380" height="34" rx="17" fill="#ecfdf5" stroke="#99f6e4" stroke-width="2"/>
+    <text x="440" y="528" font-size="14" font-weight="800" fill="#065f46" text-anchor="middle">Modules completed: 0 / 3</text>
+  </g>
+</svg>

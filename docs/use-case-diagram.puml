@@ -1,0 +1,86 @@
+@startuml zero-incident-use-case-diagram
+title Zero Incident - Use Case Diagram (release 1.5.0)
+
+left to right direction
+
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #475569
+}
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #475569
+}
+skinparam rectangle {
+  BackgroundColor #F8FAFC
+  BorderColor #94A3B8
+}
+
+actor "Employee (Learner)" as Employee
+actor "Administrator" as Admin
+
+rectangle "Zero Incident" {
+
+  usecase "Log in" as UC_Login
+  usecase "Log out" as UC_Logout
+  usecase "Set initial password" as UC_FirstPw
+  usecase "Change password" as UC_ChgPw
+
+  usecase "View training dashboard\n(progress summary)" as UC_Dash
+  usecase "View module" as UC_ViewMod
+  usecase "Start module attempt" as UC_Start
+  usecase "Complete module activity\n(checkpoints / hazard walk)" as UC_Activity
+  usecase "Take timed quiz\n(30 marks, 20s per question)" as UC_Quiz
+  usecase "View results & history" as UC_Results
+  usecase "Retake module" as UC_Retake
+
+  usecase "Verify eligibility: 70+ in all 3 modules\n(gate - demo/avg cannot bypass)" as UC_Verify
+  usecase "Generate certificate" as UC_GenCert
+  usecase "Download certificate PDF" as UC_Pdf
+
+  usecase "View overview dashboard" as UC_Overview
+  usecase "Search employees" as UC_SearchEmp
+  usecase "Manage employees\n(create / edit / status / delete)" as UC_MgrEmp
+  usecase "View employee progress" as UC_ViewProg
+  usecase "Manage trainers\n(create / edit / upload image / status)" as UC_MgrTrainer
+  usecase "Search certificate records" as UC_SearchCert
+  usecase "Issue certificate" as UC_IssueCert
+}
+
+' --- Employee use cases ---
+Employee --> UC_Login
+Employee --> UC_Logout
+Employee --> UC_FirstPw
+Employee --> UC_ChgPw
+Employee --> UC_Dash
+Employee --> UC_ViewMod
+Employee --> UC_Start
+Employee --> UC_Activity
+Employee --> UC_Quiz
+Employee --> UC_Results
+Employee --> UC_Retake
+Employee --> UC_GenCert
+Employee --> UC_Pdf
+
+' --- Admin use cases ---
+Admin --> UC_Login
+Admin --> UC_Logout
+Admin --> UC_Overview
+Admin --> UC_SearchEmp
+Admin --> UC_MgrEmp
+Admin --> UC_ViewProg
+Admin --> UC_MgrTrainer
+Admin --> UC_SearchCert
+Admin --> UC_IssueCert
+Admin --> UC_Pdf
+
+' --- include / extend relationships ---
+UC_FirstPw ..> UC_Login        : <<extend>>\n[mustChangePassword]
+UC_Retake  ..> UC_Start        : <<include>>
+UC_Activity ..> UC_Start       : <<include>>
+UC_Quiz    ..> UC_Start        : <<include>>
+UC_GenCert ..> UC_Verify       : <<include>>
+UC_IssueCert ..> UC_Verify     : <<include>>
+UC_Pdf     ..> UC_GenCert      : <<include>>
+
+@enduml

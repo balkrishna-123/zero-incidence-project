@@ -1,0 +1,49 @@
+{
+  "name": "zero-incident",
+  "version": "1.8.3",
+  "private": true,
+  "description": "Zero Incident — secure onboarding, safety learning and verified completion certificates",
+  "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server/index.js",
+    "dev": "node --env-file-if-exists=.env server/index.js",
+    "test": "node --test --test-concurrency=1 tests/integration.test.js tests/promotion.test.js",
+    "test:browser": "node tests/browser-smoke.mjs",
+    "test:journey:browser": "node tests/browser-reload-quiz.mjs",
+    "admin:recover": "node --env-file-if-exists=.env server/recover-admin.js",
+    "format": "prettier --write \"server/*.js\" \"public/js/*.js\" public/styles.css public/training.css public/certificates.css public/index.html \"tests/*.{js,mjs}\"",
+    "test:appearance": "node tests/appearance-smoke.mjs",
+    "test:manual": "node --test tests/manual-handling.test.js",
+    "test:height": "node --test tests/working-at-height.test.js",
+    "test:hazard": "node --test tests/hazard-perception.test.js",
+    "test:certificate": "node --test tests/certificate.test.js",
+    "test:certificate:browser": "node tests/certificate-browser.mjs"
+  },
+  "dependencies": {
+    "connect-mongo": "^5.1.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "express-session": "^1.18.1",
+    "fontkit": "^2.0.4",
+    "helmet": "^8.1.0",
+    "mongodb-memory-server": "^10.2.0",
+    "mongoose": "^8.16.0",
+    "multer": "^2.4.0",
+    "pdfkit": "^0.20.2",
+    "sharp": "^0.35.5",
+    "three": "^0.185.1",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@fontsource-variable/inter": "^5.2.5",
+    "@playwright/test": "^1.55.0",
+    "prettier": "^3.9.6",
+    "supertest": "^7.1.0"
+  },
+  "overrides": {
+    "proxy-addr": "^2.0.8"
+  }
+}

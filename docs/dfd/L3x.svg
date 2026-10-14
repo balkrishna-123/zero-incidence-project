@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640" font-family="Segoe UI, Arial, Helvetica, sans-serif">
+<rect width="1000" height="640" fill="#ffffff"/>
+<defs><marker id="ah" markerWidth="9" markerHeight="8" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#333333"/></marker><marker id="ahs" markerWidth="9" markerHeight="8" refX="1" refY="3.5" orient="auto"><path d="M9,0 L0,3.5 L9,7 z" fill="#333333"/></marker></defs>
+<text x="16" y="30" font-size="17" font-weight="700" fill="#12303a">Level 2 — Decomposition of 3.0 Deliver Training Module</text>
+<text x="16" y="47" font-size="11.5" fill="#5a7680">Zero Incident — Safety Training Simulator · Data Flow Diagram</text>
+<line x1="16" y1="55" x2="984" y2="55" stroke="#c9d8dc" stroke-width="1"/>
+<polyline points="154,140 253,208" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="270,450 282,306" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="346,250 504,250" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="546,194 390,100" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="470,100 594,194" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="616,250 764,250" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="820,306 820,450" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="876,250 985,250" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<circle cx="110" cy="120" r="44" fill="#eef5f2" stroke="#12303a" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="110" y="110.5" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">2.0</text>
+<text x="110" y="125.5" font-size="12" fill="#1c2b33" text-anchor="middle">Training Hub</text>
+<rect x="320" y="44" width="180" height="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="410.0" y="76.0" font-size="12.5" font-weight="600" fill="#1c2b33" text-anchor="middle">Employee / Learner</text>
+<circle cx="290" cy="250" r="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="290" y="234.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">3.1</text>
+<text x="290" y="249.0" font-size="12" fill="#1c2b33" text-anchor="middle">Load Module Course</text>
+<text x="290" y="262.0" font-size="12" fill="#1c2b33" text-anchor="middle">&amp; Assets</text>
+<circle cx="560" cy="250" r="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="560" y="234.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">3.2</text>
+<text x="560" y="249.0" font-size="12" fill="#1c2b33" text-anchor="middle">Deliver Interactive</text>
+<text x="560" y="262.0" font-size="12" fill="#1c2b33" text-anchor="middle">3D / 360 Scene</text>
+<circle cx="820" cy="250" r="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="820" y="234.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">3.3</text>
+<text x="820" y="249.0" font-size="12" fill="#1c2b33" text-anchor="middle">Record Training</text>
+<text x="820" y="262.0" font-size="12" fill="#1c2b33" text-anchor="middle">Activity</text>
+<path d="M 170,450 H 370 V 506 H 170" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="174" y="445" font-size="12" font-weight="800" fill="#087f68">D2</text>
+<text x="278.0" y="475.0" font-size="12" fill="#1c2b33" text-anchor="middle">Training Module &amp;</text>
+<text x="278.0" y="489.0" font-size="12" fill="#1c2b33" text-anchor="middle">Content</text>
+<path d="M 710,450 H 910 V 506 H 710" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="714" y="445" font-size="12" font-weight="800" fill="#087f68">D4</text>
+<text x="818.0" y="475.0" font-size="12" fill="#1c2b33" text-anchor="middle">User Progress &amp;</text>
+<text x="818.0" y="489.0" font-size="12" fill="#1c2b33" text-anchor="middle">Scores</text>
+<text x="218" y="158" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Selected Module Key</text>
+<text x="218" y="158" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Selected Module Key</text>
+<text x="258" y="367" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="end">Course Steps, 3D Scene</text>
+<text x="258" y="367" font-size="11.5" fill="#1a1a1a" text-anchor="end">Course Steps, 3D Scene</text>
+<text x="258" y="381" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="end">&amp; Checkpoints</text>
+<text x="258" y="381" font-size="11.5" fill="#1a1a1a" text-anchor="end">&amp; Checkpoints</text>
+<text x="425" y="233" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Scene Config &amp;</text>
+<text x="425" y="233" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Scene Config &amp;</text>
+<text x="425" y="247" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Resources</text>
+<text x="425" y="247" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Resources</text>
+<text x="438" y="122" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">3D Module Scene &amp; Hotspots</text>
+<text x="438" y="122" font-size="11.5" fill="#1a1a1a" text-anchor="middle">3D Module Scene &amp; Hotspots</text>
+<text x="548" y="139" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Checkpoint Decisions &amp;</text>
+<text x="548" y="139" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Checkpoint Decisions &amp;</text>
+<text x="548" y="153" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Activity Events</text>
+<text x="548" y="153" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Activity Events</text>
+<text x="690" y="233" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Activity Log</text>
+<text x="690" y="233" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Activity Log</text>
+<text x="690" y="247" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">(decisions, time)</text>
+<text x="690" y="247" font-size="11.5" fill="#1a1a1a" text-anchor="middle">(decisions, time)</text>
+<text x="832" y="380" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="start">Update In-Progress Status</text>
+<text x="832" y="380" font-size="11.5" fill="#1a1a1a" text-anchor="start">Update In-Progress Status</text>
+<text x="928" y="229" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Activity Complete —</text>
+<text x="928" y="229" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Activity Complete —</text>
+<text x="928" y="243" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Ready for Quiz (-&gt; 4.0)</text>
+<text x="928" y="243" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Ready for Quiz (-&gt; 4.0)</text>
+<text x="16" y="628" font-size="10.5" fill="#5a7680">Legend:  rectangle = external entity · circle = process · open bar = data store · dashed circle = sibling process from the parent Level 1 diagram · every arrow is a named data flow</text>
+</svg>

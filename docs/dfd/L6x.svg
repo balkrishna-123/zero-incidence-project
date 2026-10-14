@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640" font-family="Segoe UI, Arial, Helvetica, sans-serif">
+<rect width="1000" height="640" fill="#ffffff"/>
+<defs><marker id="ah" markerWidth="9" markerHeight="8" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#333333"/></marker><marker id="ahs" markerWidth="9" markerHeight="8" refX="1" refY="3.5" orient="auto"><path d="M9,0 L0,3.5 L9,7 z" fill="#333333"/></marker></defs>
+<text x="16" y="30" font-size="17" font-weight="700" fill="#12303a">Level 2 — Decomposition of 6.0 Manage Retry and Certificate</text>
+<text x="16" y="47" font-size="11.5" fill="#5a7680">Zero Incident — Safety Training Simulator · Data Flow Diagram</text>
+<line x1="16" y1="55" x2="984" y2="55" stroke="#c9d8dc" stroke-width="1"/>
+<polyline points="152,168 255,200" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="590,470 330,284" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="320,285 525,345" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="356,230 776,230" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="510,400 510,430 280,430 280,440 154,440" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="540,434 540,560 36,560 36,72 60,72" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="230,72 830,72 830,176" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="820,176 820,92 230,92" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="830,284 700,470" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<rect x="60" y="44" width="170" height="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="145.0" y="76.0" font-size="12.5" font-weight="600" fill="#1c2b33" text-anchor="middle">Employee / Learner</text>
+<circle cx="110" cy="150" r="44" fill="#eef5f2" stroke="#12303a" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="110" y="140.5" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">5.0</text>
+<text x="110" y="155.5" font-size="12" fill="#1c2b33" text-anchor="middle">Score &amp; Results</text>
+<circle cx="110" cy="440" r="44" fill="#eef5f2" stroke="#12303a" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="110" y="430.5" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">4.0</text>
+<text x="110" y="445.5" font-size="12" fill="#1c2b33" text-anchor="middle">Conduct Quiz</text>
+<circle cx="300" cy="230" r="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="300" y="214.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">6.1</text>
+<text x="300" y="229.0" font-size="12" fill="#1c2b33" text-anchor="middle">Evaluate Result &amp;</text>
+<text x="300" y="242.0" font-size="12" fill="#1c2b33" text-anchor="middle">Eligibility</text>
+<circle cx="560" cy="380" r="54" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="560" y="364.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">6.2</text>
+<text x="560" y="379.0" font-size="12" fill="#1c2b33" text-anchor="middle">Handle</text>
+<text x="560" y="392.0" font-size="12" fill="#1c2b33" text-anchor="middle">Retake</text>
+<circle cx="830" cy="230" r="54" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="830" y="214.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">6.3</text>
+<text x="830" y="229.0" font-size="12" fill="#1c2b33" text-anchor="middle">Generate</text>
+<text x="830" y="242.0" font-size="12" fill="#1c2b33" text-anchor="middle">Certificate</text>
+<path d="M 540,470 H 740 V 526 H 540" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="544" y="465" font-size="12" font-weight="800" fill="#087f68">D5</text>
+<text x="648.0" y="495.0" font-size="12" fill="#1c2b33" text-anchor="middle">Results &amp;</text>
+<text x="648.0" y="509.0" font-size="12" fill="#1c2b33" text-anchor="middle">Certificates</text>
+<text x="205" y="198" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Module Result</text>
+<text x="205" y="198" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Module Result</text>
+<text x="450" y="392" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Stored Results (all modules)</text>
+<text x="450" y="392" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Stored Results (all modules)</text>
+<text x="408" y="314" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Fail Decision (score &lt; 70)</text>
+<text x="408" y="314" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Fail Decision (score &lt; 70)</text>
+<text x="566" y="220" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Eligible — all modules ≥ 70</text>
+<text x="566" y="220" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Eligible — all modules ≥ 70</text>
+<text x="388" y="424" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Retake Request (new attempt)</text>
+<text x="388" y="424" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Retake Request (new attempt)</text>
+<text x="200" y="552" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Retake Notification</text>
+<text x="200" y="552" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Retake Notification</text>
+<text x="530" y="64" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Generate Certificate Request</text>
+<text x="530" y="64" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Generate Certificate Request</text>
+<text x="530" y="108" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Completion Certificate (PDF)</text>
+<text x="530" y="108" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Completion Certificate (PDF)</text>
+<text x="798" y="386" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="start">Save Certificate Record</text>
+<text x="798" y="386" font-size="11.5" fill="#1a1a1a" text-anchor="start">Save Certificate Record</text>
+<text x="16" y="628" font-size="10.5" fill="#5a7680">Legend:  rectangle = external entity · circle = process · open bar = data store · dashed circle = sibling process from the parent Level 1 diagram · every arrow is a named data flow</text>
+</svg>

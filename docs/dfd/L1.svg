@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="950" viewBox="0 0 960 950" font-family="Segoe UI, Arial, Helvetica, sans-serif">
+<rect width="960" height="950" fill="#ffffff"/>
+<defs><marker id="ah" markerWidth="9" markerHeight="8" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#333333"/></marker><marker id="ahs" markerWidth="9" markerHeight="8" refX="1" refY="3.5" orient="auto"><path d="M9,0 L0,3.5 L9,7 z" fill="#333333"/></marker></defs>
+<text x="16" y="30" font-size="17" font-weight="700" fill="#12303a">Level 1 DFD — Zero Incident (corrected)</text>
+<text x="16" y="47" font-size="11.5" fill="#5a7680">Zero Incident — Safety Training Simulator · Data Flow Diagram  ·  decomposition of the context (Level 0) process</text>
+<line x1="16" y1="55" x2="944" y2="55" stroke="#c9d8dc" stroke-width="1"/>
+<polyline points="186,117 248,117" fill="none" stroke="#333333" stroke-width="1.7" marker-start="url(#ahs)" marker-end="url(#ah)"/>
+<polyline points="352,105 620,105" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="620,129 352,129" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="300,169 300,215" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="186,343 248,283" fill="none" stroke="#333333" stroke-width="1.7" marker-start="url(#ahs)" marker-end="url(#ah)"/>
+<polyline points="300,319 300,365" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="352,253 620,257" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="620,281 352,273" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="352,293 620,397" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="352,397 620,289" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="620,305 352,421" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="248,405 186,365" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="186,353 248,393" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="300,469 300,515" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="186,369 252,553" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="252,581 186,377" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="352,553 620,557" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="620,577 352,573" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="300,619 300,665" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="352,703 620,423" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="352,721 620,705" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="300,769 300,815" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="352,853 620,725" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="255,905 111,905 111,381" fill="none" stroke="#333333" stroke-width="1.7" marker-end="url(#ah)"/>
+<polyline points="248,855 176,855 176,567 248,567" fill="none" stroke="#333333" stroke-width="1.7" stroke-dasharray="7 5" marker-end="url(#ah)"/>
+<rect x="36" y="64" width="150" height="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="111.0" y="96.0" font-size="12.5" font-weight="600" fill="#1c2b33" text-anchor="middle">Administrator</text>
+<rect x="36" y="300" width="150" height="56" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="111.0" y="332.0" font-size="12.5" font-weight="600" fill="#1c2b33" text-anchor="middle">Employee / Learner</text>
+<circle cx="300" cy="92" r="52" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="300" y="76.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">1.0</text>
+<text x="300" y="91.0" font-size="12" fill="#1c2b33" text-anchor="middle">Authenticate</text>
+<text x="300" y="104.0" font-size="12" fill="#1c2b33" text-anchor="middle">User</text>
+<circle cx="300" cy="242" r="52" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="300" y="226.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">2.0</text>
+<text x="300" y="241.0" font-size="12" fill="#1c2b33" text-anchor="middle">Manage Training</text>
+<text x="300" y="254.0" font-size="12" fill="#1c2b33" text-anchor="middle">Hub</text>
+<circle cx="300" cy="392" r="52" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="300" y="376.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">3.0</text>
+<text x="300" y="391.0" font-size="12" fill="#1c2b33" text-anchor="middle">Deliver Training</text>
+<text x="300" y="404.0" font-size="12" fill="#1c2b33" text-anchor="middle">Module</text>
+<circle cx="300" cy="542" r="52" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="300" y="526.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">4.0</text>
+<text x="300" y="541.0" font-size="12" fill="#1c2b33" text-anchor="middle">Conduct Quiz &amp;</text>
+<text x="300" y="554.0" font-size="12" fill="#1c2b33" text-anchor="middle">Record Activity</text>
+<circle cx="300" cy="692" r="52" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="300" y="676.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">5.0</text>
+<text x="300" y="691.0" font-size="12" fill="#1c2b33" text-anchor="middle">Calculate Score &amp;</text>
+<text x="300" y="704.0" font-size="12" fill="#1c2b33" text-anchor="middle">Results</text>
+<circle cx="300" cy="842" r="52" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="300" y="826.0" font-size="13" font-weight="700" fill="#12303a" text-anchor="middle">6.0</text>
+<text x="300" y="841.0" font-size="12" fill="#1c2b33" text-anchor="middle">Manage Retry and</text>
+<text x="300" y="854.0" font-size="12" fill="#1c2b33" text-anchor="middle">Certificate</text>
+<path d="M 620,64 H 830 V 120 H 620" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="624" y="59" font-size="12" font-weight="800" fill="#087f68">D1</text>
+<text x="733.0" y="96.0" font-size="12" fill="#1c2b33" text-anchor="middle">User Accounts</text>
+<path d="M 620,214 H 830 V 270 H 620" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="624" y="209" font-size="12" font-weight="800" fill="#087f68">D2</text>
+<text x="733.0" y="239.0" font-size="12" fill="#1c2b33" text-anchor="middle">Training Module</text>
+<text x="733.0" y="253.0" font-size="12" fill="#1c2b33" text-anchor="middle">&amp; Content</text>
+<path d="M 620,364 H 830 V 420 H 620" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="624" y="359" font-size="12" font-weight="800" fill="#087f68">D4</text>
+<text x="733.0" y="389.0" font-size="12" fill="#1c2b33" text-anchor="middle">User Progress &amp;</text>
+<text x="733.0" y="403.0" font-size="12" fill="#1c2b33" text-anchor="middle">Module Scores</text>
+<path d="M 620,514 H 830 V 570 H 620" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="624" y="509" font-size="12" font-weight="800" fill="#087f68">D3</text>
+<text x="733.0" y="539.0" font-size="12" fill="#1c2b33" text-anchor="middle">Quiz Questions</text>
+<text x="733.0" y="553.0" font-size="12" fill="#1c2b33" text-anchor="middle">&amp; Answers</text>
+<path d="M 620,664 H 830 V 720 H 620" fill="#ffffff" stroke="#12303a" stroke-width="2"/>
+<text x="624" y="659" font-size="12" font-weight="800" fill="#087f68">D5</text>
+<text x="733.0" y="689.0" font-size="12" fill="#1c2b33" text-anchor="middle">Results &amp;</text>
+<text x="733.0" y="703.0" font-size="12" fill="#1c2b33" text-anchor="middle">Certificates</text>
+<text x="217" y="92" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Manage Users</text>
+<text x="217" y="92" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Manage Users</text>
+<text x="217" y="106" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">(Add/Update/Delete)</text>
+<text x="217" y="106" font-size="11.5" fill="#1a1a1a" text-anchor="middle">(Add/Update/Delete)</text>
+<text x="486" y="95" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Verify Credentials</text>
+<text x="486" y="95" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Verify Credentials</text>
+<text x="486" y="145" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">User Data</text>
+<text x="486" y="145" font-size="11.5" fill="#1a1a1a" text-anchor="middle">User Data</text>
+<text x="310" y="195" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Authenticated User + Session</text>
+<text x="310" y="195" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Authenticated User + Session</text>
+<text x="212" y="307" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="end">3D Hub ↔ Module Status</text>
+<text x="212" y="307" font-size="11.5" fill="#1a1a1a" text-anchor="end">3D Hub ↔ Module Status</text>
+<text x="310" y="347" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Selected Module</text>
+<text x="310" y="347" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Selected Module</text>
+<text x="486" y="241" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Read Module List &amp; Content</text>
+<text x="486" y="241" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Read Module List &amp; Content</text>
+<text x="486" y="297" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Module Data</text>
+<text x="486" y="297" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Module Data</text>
+<text x="452" y="317" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Read Progress &amp; Scores</text>
+<text x="452" y="317" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Read Progress &amp; Scores</text>
+<text x="500" y="361" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Fetch Module Content &amp; Assets</text>
+<text x="500" y="361" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Fetch Module Content &amp; Assets</text>
+<text x="486" y="381" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Module Assets &amp; 3D Scenes</text>
+<text x="486" y="381" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Module Assets &amp; 3D Scenes</text>
+<text x="180" y="404" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="end">3d/360 Scenes &amp; Resources</text>
+<text x="180" y="404" font-size="11.5" fill="#1a1a1a" text-anchor="end">3d/360 Scenes &amp; Resources</text>
+<text x="180" y="418" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="end">Interaction / Activity Input</text>
+<text x="180" y="418" font-size="11.5" fill="#1a1a1a" text-anchor="end">Interaction / Activity Input</text>
+<text x="310" y="497" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Activity Complete</text>
+<text x="310" y="497" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Activity Complete</text>
+<text x="170" y="467" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="end">Submitted Quiz Answers</text>
+<text x="170" y="467" font-size="11.5" fill="#1a1a1a" text-anchor="end">Submitted Quiz Answers</text>
+<text x="170" y="527" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="end">Quiz Questions</text>
+<text x="170" y="527" font-size="11.5" fill="#1a1a1a" text-anchor="end">Quiz Questions</text>
+<text x="486" y="541" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Fetch Questions</text>
+<text x="486" y="541" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Fetch Questions</text>
+<text x="486" y="593" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Questions &amp; Correct Answers</text>
+<text x="486" y="593" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Questions &amp; Correct Answers</text>
+<text x="310" y="647" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Submitted Answers</text>
+<text x="310" y="647" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Submitted Answers</text>
+<text x="452" y="613" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Update Progress &amp; Scores</text>
+<text x="452" y="613" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Update Progress &amp; Scores</text>
+<text x="486" y="701" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Save Final Result</text>
+<text x="486" y="701" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Save Final Result</text>
+<text x="310" y="797" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Result Record</text>
+<text x="310" y="797" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Result Record</text>
+<text x="486" y="817" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">Generate Certificate (if eligible)</text>
+<text x="486" y="817" font-size="11.5" fill="#1a1a1a" text-anchor="middle">Generate Certificate (if eligible)</text>
+<text x="103" y="578" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="end">Final Result &amp;</text>
+<text x="103" y="578" font-size="11.5" fill="#1a1a1a" text-anchor="end">Final Result &amp;</text>
+<text x="103" y="592" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="end">Certificate (PDF)</text>
+<text x="103" y="592" font-size="11.5" fill="#1a1a1a" text-anchor="end">Certificate (PDF)</text>
+<text x="166" y="715" font-size="11.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" text-anchor="end">Retake Request (score &lt; 70)</text>
+<text x="166" y="715" font-size="11.5" fill="#1a1a1a" text-anchor="end">Retake Request (score &lt; 70)</text>
+<text x="16" y="938" font-size="10.5" fill="#5a7680">Legend:  rectangle = external entity · circle = process · open bar = data store (D1–D5) · dashed arrow = retry flow · every arrow is a named data flow</text>
+</svg>
