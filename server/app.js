@@ -14,6 +14,7 @@ import { z } from "zod";
 import {
   ROOT,
   UPLOAD_DIR,
+  DEFAULT_TRAINER_IMAGE,
   production,
   demoMode,
   sessionSecret,
@@ -186,7 +187,7 @@ function clearSessionCookie(req, res) {
 }
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024, files: 1, fields: 12 },
+  limits: { fileSize: 5 * 1024 * 1024, files: 1, fields: 20 },
 });
 
 async function requireAuth(req, res, next) {
@@ -327,6 +328,7 @@ async function trainerView(trainer) {
   delete doc.permissions?._id;
   return {
     ...doc,
+    imageUrl: trainer.imageUrl || DEFAULT_TRAINER_IMAGE,
     id: String(trainer._id),
     moduleKeys: modules.map((m) => m.key),
     modules,
@@ -369,7 +371,7 @@ async function moduleViews() {
         ? {
             id: String(trainer._id),
             nickname: trainer.nickname,
-            imageUrl: trainer.imageUrl,
+            imageUrl: trainer.imageUrl || DEFAULT_TRAINER_IMAGE,
             introduction: trainer.introduction,
           }
         : null,
@@ -1130,12 +1132,11 @@ export async function createApp(mongoUrl) {
       temporaryPassword: req.body.temporaryPassword,
       confirmPassword: req.body.confirmPassword,
     });
-    if (!req.file) fail(422, "A trainer profile picture is required.");
     if (await Trainer.exists({ nicknameKey: input.nickname.toLowerCase() }))
       fail(409, "That trainer nickname is already in use.");
     if (await User.exists({ username: input.username }))
       fail(409, "That trainer ID is already in use. Choose a different one.");
-    const imageUrl = await saveImage(req.file);
+    const imageUrl = (await saveImage(req.file)) || "";
     let account;
     try {
       account = await User.create({
@@ -1663,13 +1664,21 @@ export async function createApp(mongoUrl) {
         fields: { [field]: `This ${label} is already in use.` },
       });
     }
-    if (error instanceof multer.MulterError)
+    if (error instanceof multer.MulterError) {
+      const uploadErrors = {
+        LIMIT_FILE_SIZE: "The image must be no larger than 5 MB.",
+        LIMIT_FILE_COUNT: "Choose only one profile picture.",
+        LIMIT_UNEXPECTED_FILE: "Unexpected upload field. Choose one profile picture in the image field.",
+        LIMIT_FIELD_COUNT: "The trainer form contains too many fields. Refresh the page and try again.",
+        LIMIT_FIELD_VALUE: "A trainer form field is too large.",
+        LIMIT_FIELD_KEY: "A trainer form field name is too long.",
+        LIMIT_PART_COUNT: "The trainer form contains too many parts.",
+      };
       return res.status(422).json({
-        error:
-          error.code === "LIMIT_FILE_SIZE"
-            ? "The image must be no larger than 5 MB."
-            : "Invalid image upload. Choose one JPG, PNG or WebP.",
+        error: uploadErrors[error.code] || "The upload request could not be processed.",
+        code: error.code,
       });
+    }
     if (error instanceof SyntaxError && error.status === 400)
       return res.status(400).json({ error: "Invalid JSON request." });
     const status = error.status || 500;

@@ -23,6 +23,7 @@ if (
 export const sessionSecret =
   process.env.SESSION_SECRET || crypto.randomBytes(48).toString("hex");
 export const DATA_DIR = process.env.DATA_DIR || path.join(ROOT, "data");
+export const DEFAULT_TRAINER_IMAGE = "/images/trainer-default.svg";
 export const UPLOAD_DIR = path.join(DATA_DIR, "trainer-images");
 export const MODULE_KEYS = [
   "manual-handling",

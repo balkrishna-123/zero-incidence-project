@@ -1,4 +1,5 @@
 import express from "express";
+import { DEFAULT_TRAINER_IMAGE } from "./config.js";
 import { completionStatus } from "./completion.js";
 import { attemptPercent } from "./progress-percent.js";
 import mongoose from "mongoose";
@@ -371,7 +372,7 @@ export function createTrainingRouter() {
       trainer: trainer
         ? {
             nickname: trainer.nickname,
-            imageUrl: trainer.imageUrl,
+            imageUrl: trainer.imageUrl || DEFAULT_TRAINER_IMAGE,
             introduction: trainer.introduction,
           }
         : null,

@@ -55,6 +55,10 @@ function client(app) {
         .set("X-CSRF-Token", csrf)
         .field("firstName", "Test")
         .field("lastName", "Guide")
+        .field("age", "")
+        .field("introduction", "Hello from Scout")
+        .field("permission-view", "on")
+        .field("permission-reset", "on")
         .field("nickname", "Scout")
         .field("status", "active")
         .field("username", "scout.training")
@@ -417,6 +421,52 @@ test(
           .expect(200);
       },
     );
+    await t.test("trainer pictures are optional, fallback avatars render and edits retain existing pictures", async () => {
+      const fields = {
+        firstName: "Optional", lastName: "Guide", nickname: "NoPhoto",
+        age: "", introduction: "A guide without an uploaded picture", status: "active",
+        username: "optional.guide", temporaryPassword: "Welcome!2026", confirmPassword: "Welcome!2026",
+        "permission-view": "on", "permission-reset": "on",
+        permissions: JSON.stringify({viewProgress: true, resetPassword: true}),
+        moduleKeys: JSON.stringify(["working-at-height"]),
+      };
+      const made = await admin.agent.post("/api/admin/trainers")
+        .set("X-CSRF-Token", admin.csrfToken).field(fields).expect(201);
+      const id = made.body.trainer.id;
+      assert.equal(made.body.trainer.imageUrl, "/images/trainer-default.svg");
+      await supertest(app).get(made.body.trainer.imageUrl).expect(200).expect("Content-Type", /image\/svg/);
+      const hub = await employee.get("/me/training").expect(200);
+      assert.equal(hub.body.modules.find(m => m.key === "working-at-height").trainer.imageUrl, made.body.trainer.imageUrl);
+      const course = await employee.get("/training/working-at-height").expect(200);
+      assert.equal(course.body.trainer.imageUrl, made.body.trainer.imageUrl);
+      const changed = await admin.patch(`/admin/trainers/${id}`, fields).expect(200);
+      assert.equal(changed.body.trainer.imageUrl, made.body.trainer.imageUrl);
+      for (const format of ["jpeg", "webp"]) {
+        const image = await sharp({create: {width: 32, height: 32, channels: 3, background: "#244958"}}).toFormat(format).toBuffer();
+        const replaced = await admin.agent.patch(`/api/admin/trainers/${id}`)
+          .set("X-CSRF-Token", admin.csrfToken).field(fields)
+          .attach("image", image, {filename: `guide.${format}`, contentType: `image/${format}`}).expect(200);
+        assert.match(replaced.body.trainer.imageUrl, /^\/media\/trainers\/.*\.webp$/);
+        const retained = await admin.patch(`/admin/trainers/${id}`, fields).expect(200);
+        assert.equal(retained.body.trainer.imageUrl, replaced.body.trainer.imageUrl);
+      }
+      await admin.delete(`/admin/trainers/${id}`, {confirmation: "NoPhoto"}).expect(200);
+    });
+    await t.test("upload limits report accurate errors and corrupt or oversized images remain blocked", async () => {
+      const tooMany = admin.agent.post("/api/admin/trainers").set("X-CSRF-Token", admin.csrfToken);
+      for (let i=0; i<21; i++) tooMany.field(`extra${i}`, "value");
+      const limited = await tooMany.expect(422);
+      assert.equal(limited.body.code, "LIMIT_FIELD_COUNT");
+      assert.match(limited.body.error, /too many fields/);
+      assert.doesNotMatch(limited.body.error, /Invalid image/);
+      const large = await admin.upload("/admin/trainers", Buffer.alloc(5*1024*1024+1), "large.png").expect(422);
+      assert.equal(large.body.code, "LIMIT_FILE_SIZE");
+      const corrupt = await admin.agent.patch(`/api/admin/trainers/${trainerId}`)
+        .set("X-CSRF-Token", admin.csrfToken)
+        .field({firstName: "Test", lastName: "Guide", nickname: "Scout", status: "active", moduleKeys: JSON.stringify(["manual-handling"]), permissions: "{}"})
+        .attach("image", Buffer.from("not an image"), "broken.png").expect(422);
+      assert.match(corrupt.body.error, /could not be read/);
+    });
     await t.test(
       "certificate eligibility requires every module to pass, including boundary scores",
       async () => {
