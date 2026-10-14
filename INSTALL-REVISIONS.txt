@@ -1,0 +1,54 @@
+ZERO INCIDENT — CLIENT REVISIONS, OCTOBER 2026
+==============================================
+
+This zip contains ONLY the files changed by the October 2026 revision
+(23 files, same folder structure as the repository).
+
+WHAT IS INSIDE
+  server/    rating removal, new promotion rules, completion percentages
+  public/    dashboard UI, module percent bars, forklift manifest, 3D hazard walk
+  tests/     updated promotion suite, percent unit tests, browser smoke tests
+  scripts/   forklift headless playtest
+  docs/      CLIENT-REVISIONS.md — full explanation of every change
+  package.json  two new helper scripts (test:revisions:browser, test:forklift:play)
+
+HOW TO INSTALL
+  1. Back up your working folder first (especially .env, data/ and any
+     local changes you have not committed).
+  2. Extract this zip OVER the root of your zero-incidence-project folder
+     (the folder that contains server/, public/, package.json).
+     Existing files with the same name are replaced — that is intended.
+  3. No new npm dependencies were added, but run anyway if in doubt:
+         npm install
+  4. Start as usual:
+         npm start
+  5. Verify (optional but recommended):
+         npm test                          # 21/21 server tests
+         npm run test:revisions:browser    # 16 dashboard + 3D checks
+         npm run test:forklift:play        # forklift 1->2->3 playthrough
+     The two browser scripts need a running app; pass the URL as an
+     argument, e.g.  node tests/browser-revisions.mjs http://localhost:3000
+
+THE FIVE CHANGES, IN ONE PARAGRAPH EACH
+  1. Star ratings removed from employee and trainer dashboards (page, nav,
+     API, model). Report-a-trainer moved into Help & resources.
+  2. Trainer -> admin promotion now = 90 active days + 5 employees certified
+     under their guidance (tune in server/config.js or via the environment
+     variables PROMOTION_ADMIN_MIN_DAYS / PROMOTION_ADMIN_MIN_CERTIFIED).
+     Employee -> trainer is unchanged (90+ in every module).
+  3. Every module shows a completion percentage at the top of its page, and
+     on employee progress, hub door plates, trainer roster and admin console.
+  4. Forklift: pallets unlock in order 1 -> 2 -> 3; the manifest now labels
+     each row LOCKED / UP NEXT / ON BOARD / DELIVERED and explains locks when
+     clicked; a guard makes a stalled shift impossible.
+  5. Spot the Hazard is a first-person 3D walk now (same rules: 60 seconds,
+     six hazards, +100 per find, -10 per wrong click). Browsers without WebGL
+     automatically fall back to the old 2D aisle.
+
+DEMO SIGN-INS (seeded development data)
+  employee  ramesh.s  (first sign-in sets a new password)
+  employee  anisha.g  DemoOnly!2026
+  trainer   yeti      Welcome!2026
+  admin     safety.admin  ZeroIncident!2026
+
+Full detail: docs/CLIENT-REVISIONS.md inside this zip.

@@ -29,6 +29,18 @@ export const MODULE_KEYS = [
   "working-at-height",
   "hazard-perception",
 ];
+// Promotion rules (client requirement, Oct 2026 revision).
+// Employee -> trainer: 90/100 or higher in every module, administrator approves.
+// Trainer -> administrator: tenure plus a training track record instead of the
+// retired star-rating system. Both numbers are configurable through the
+// environment so the client can tune them without a code change.
+export const PROMOTION = {
+  trainerMinScorePerModule: 90,
+  adminMinDaysActive: Number(process.env.PROMOTION_ADMIN_MIN_DAYS || 90),
+  adminMinCertifiedEmployees: Number(
+    process.env.PROMOTION_ADMIN_MIN_CERTIFIED || 5,
+  ),
+};
 export const DEMO_CREDENTIALS = {
   admin: { username: "safety.admin", password: "ZeroIncident!2026" },
   employee: { username: "ramesh.s", password: "Welcome!2026" },

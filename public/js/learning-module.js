@@ -94,6 +94,12 @@ export async function levelJourneyPage(
     html: `<div class="learning-module journey-module" data-course="${esc(moduleKey)}" data-accent="${esc(c.color)}">
       <a href="#/employee/hub" class="training-back">${icon("arrow", 14)} Back to training hub</a>
       <header class="training-heading"><div class="training-heading-title"><span class="training-module-icon">${icon(view.icon, 24)}</span><div><div class="page-eyebrow">MODULE ${esc(view.number)} · ${esc(c.zone.toUpperCase())}</div><h1>${esc(c.title)}</h1><p>${esc(c.subtitle)}</p></div></div><span class="training-save-status">${icon("shield", 13)} <span data-save-label>Progress saves automatically</span></span></header>
+      <div class="module-progress-top" role="status" aria-label="Module completion">
+        <span class="module-progress-label">${icon("chart", 14)}<span>Module completion</span></span>
+        <span class="module-percent-bar big"><i data-progress-fill style="width:${data.percent ?? 0}%"></i></span>
+        <strong class="module-percent" data-progress-pct>${data.percent ?? 0}%</strong>
+        <small class="muted" data-progress-note>${(data.percent ?? 0) >= 100 ? "finished — verified" : "of this module finished so far"}</small>
+      </div>
       <div class="training-error" role="alert" hidden><span data-error-text></span><button class="btn btn-secondary btn-small" data-reconnect>Reconnect</button></div>
       <div class="journey-layout">
         <aside class="journey-map" aria-label="Module journey map"><ol class="journey-nodes" data-journey-map>${journeyMapHTML(c, null)}</ol></aside>
@@ -210,8 +216,20 @@ export async function levelJourneyPage(
       const trainerBubble = (text, extraClass = "") =>
         `<div class="trainer-bubble ${extraClass}"><span class="guide-avatar">${data.trainer ? guideImage(data.trainer, 40) : guideImage(null, 40)}</span><div class="trainer-bubble-text"><small>${esc(guideName)} · YOUR VIRTUAL TRAINER</small><p>${text}</p></div></div>`;
 
+      const syncPercent = () => {
+        const pct = attempt?.percent ?? data.percent ?? 0;
+        const fill = wrap.querySelector("[data-progress-fill]");
+        const label = wrap.querySelector("[data-progress-pct]");
+        const note = wrap.querySelector("[data-progress-note]");
+        if (!fill) return;
+        fill.style.width = `${pct}%`;
+        label.textContent = `${pct}%`;
+        note.textContent =
+          pct >= 100 ? "finished — verified" : "of this module finished so far";
+      };
       function render() {
         if (!alive) return;
+        syncPercent();
         stopTimer();
         scene?.dispose();
         scene = null;

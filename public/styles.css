@@ -4253,12 +4253,6 @@ body[data-theme="dark"] .module-card .module-icon.amber {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-.star-row {
-  color: #e9a326;
-  font-size: 13px;
-  letter-spacing: 2px;
-  white-space: nowrap;
-}
 .detail-module .badge {
   margin-left: auto;
 }
@@ -4271,57 +4265,6 @@ body[data-theme="dark"] .module-card .module-icon.amber {
   display: block;
   font-size: 9px;
   margin-top: 2px;
-}
-.star-input {
-  display: flex;
-  gap: 2px;
-  align-items: center;
-}
-.star-input button {
-  background: none;
-  border: 0;
-  padding: 2px;
-  cursor: pointer;
-  color: var(--muted);
-  opacity: 0.45;
-  display: grid;
-  place-items: center;
-  border-radius: 4px;
-}
-.star-input button:hover {
-  opacity: 0.8;
-  transform: scale(1.08);
-}
-.star-input button.active {
-  color: #e9a326;
-  opacity: 1;
-}
-.rating-row {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 14px;
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.rating-row strong {
-  font-size: 11px;
-  font-weight: 550;
-  color: var(--text);
-}
-.rating-row small {
-  font-size: 9px;
-  color: var(--subtle);
-  margin-top: 2px;
-}
-.rating-actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-.rating-comment {
-  flex: 1;
 }
 .info-callout.green-callout {
   background: #1dab7709;
@@ -4340,4 +4283,68 @@ body[data-theme="dark"] .module-card .module-icon.amber {
 .field input[readonly][disabled] {
   opacity: 0.75;
   background: var(--elevated);
+}
+
+/* ---- Module completion percentages (Oct 2026 revision) ------------------- */
+.module-percent {
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.module-percent-bar {
+  display: block;
+  width: 96px;
+  max-width: 100%;
+  height: 5px;
+  border-radius: 4px;
+  background: var(--elevated);
+  overflow: hidden;
+  margin-top: 7px;
+}
+.module-percent-bar > i {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #23ab7f, #63c793);
+  transition: width 0.45s ease;
+}
+.module-percent-bar.big {
+  width: 220px;
+  height: 8px;
+  margin-top: 0;
+}
+.cell-percent {
+  font-size: 9px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.module-progress-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: -4px 0 18px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 10px;
+}
+.module-progress-top .module-progress-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.game-door-percent {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 650;
+  color: #23ab7f;
 }

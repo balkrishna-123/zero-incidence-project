@@ -2,7 +2,7 @@
   "name": "zero-incident",
   "version": "1.8.3",
   "private": true,
-  "description": "Zero Incident — secure onboarding, safety learning and verified completion certificates",
+  "description": "Zero Incident \u2014 secure onboarding, safety learning and verified completion certificates",
   "type": "module",
   "engines": {
     "node": ">=20.19.0"
@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node --env-file-if-exists=.env server/index.js",
     "dev": "node --env-file-if-exists=.env server/index.js",
-    "test": "node --test --test-concurrency=1 tests/integration.test.js tests/promotion.test.js",
+    "test": "node --test --test-concurrency=1 tests/integration.test.js tests/promotion.test.js tests/progress-percent.test.js",
     "test:browser": "node tests/browser-smoke.mjs",
     "test:journey:browser": "node tests/browser-reload-quiz.mjs",
     "admin:recover": "node --env-file-if-exists=.env server/recover-admin.js",
@@ -20,7 +20,9 @@
     "test:height": "node --test tests/working-at-height.test.js",
     "test:hazard": "node --test tests/hazard-perception.test.js",
     "test:certificate": "node --test tests/certificate.test.js",
-    "test:certificate:browser": "node tests/certificate-browser.mjs"
+    "test:certificate:browser": "node tests/certificate-browser.mjs",
+    "test:revisions:browser": "node tests/browser-revisions.mjs",
+    "test:forklift:play": "node scripts/playtest-forklift.mjs"
   },
   "dependencies": {
     "connect-mongo": "^5.1.0",

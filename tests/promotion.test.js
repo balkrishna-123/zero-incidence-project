@@ -17,9 +17,7 @@ const { connectDatabase, disconnectDatabase } = await import(
 );
 const { seedDatabase } = await import("../server/seed.js");
 const { createApp } = await import("../server/app.js");
-const { User, Trainer, Module, Progress, Rating } = await import(
-  "../server/models.js"
-);
+const { User, Trainer, Module, Progress } = await import("../server/models.js");
 const { hashPassword } = await import("../server/passwords.js");
 
 function client(app) {
@@ -77,7 +75,7 @@ async function makeEmployee(username, scores) {
   return user;
 }
 
-test("Roles and promotion: ratings, trainer and admin applications", {
+test("Roles and promotion: reports, trainer and admin applications", {
   timeout: 120000,
 }, async (t) => {
   const uri = await connectDatabase({ isolated: true });
@@ -126,7 +124,6 @@ test("Roles and promotion: ratings, trainer and admin applications", {
     { key: "manual-handling" },
     { $set: { trainerId: trainer._id } },
   );
-  const otherModule = await Module.findOne({ key: "working-at-height" });
 
   const rater = await makeEmployee("star.rater", { "manual-handling": 80 });
   const lowScore = await makeEmployee("low.score", {
@@ -161,53 +158,25 @@ test("Roles and promotion: ratings, trainer and admin applications", {
   await trainerClient.init();
   await trainerClient.login("guide.team", "TrainerPw!2026");
 
-  await t.test("employees rate each module's trainer, once per module", async () => {
-    // Rating no longer requires passing the module (dedicated Rate trainer page).
-    await lowClient
-      .post("/ratings", {
-        moduleKey: "manual-handling",
-        trainerId: String(trainer._id),
-        stars: 5,
-      })
-      .expect(201);
-    // Employees cannot enter the trainer workspace.
-    await raterClient.get("/trainer/me").expect(403);
-    // A different employee rating the same module is fine.
+  await t.test("the star-rating endpoint is retired", async () => {
     await raterClient
       .post("/ratings", {
         moduleKey: "manual-handling",
         trainerId: String(trainer._id),
         stars: 5,
-        comment: "Great guidance!",
       })
-      .expect(201);
-    // One rating per employee per module.
-    await raterClient
-      .post("/ratings", {
-        moduleKey: "manual-handling",
-        trainerId: String(trainer._id),
-        stars: 4,
-      })
-      .expect(409);
-    // The trainer is not assigned to these modules.
-    await raterClient
-      .post("/ratings", {
-        moduleKey: "working-at-height",
-        trainerId: String(trainer._id),
-        stars: 5,
-      })
-      .expect(409);
-    await raterClient
-      .post("/ratings", {
-        moduleKey: "hazard-perception",
-        trainerId: String(trainer._id),
-        stars: 5,
-      })
-      .expect(409);
+      .expect(404);
+    // No rating payloads leak into the employee or trainer payloads.
+    const training = await raterClient.get("/me/training").expect(200);
+    assert.equal(training.body.myRatings, undefined);
+    assert.equal(training.body.ratedModules, undefined);
     const me = await trainerClient.get("/trainer/me").expect(200);
-    assert.equal(me.body.trainer.ratings.totalStars, 10);
-    assert.equal(me.body.trainer.ratings.count, 2);
-    assert.equal(me.body.canApplyAdmin, false);
+    assert.equal(me.body.trainer.ratings, undefined);
+    // Completion percentages are present instead.
+    assert.deepEqual(Object.keys(training.body.modulePercents).length, 3);
+    assert.equal(training.body.modulePercents["manual-handling"], 100); // passed
+    assert.equal(typeof me.body.adminEligibility.daysActive, "number");
+    assert.equal(typeof me.body.adminEligibility.certified, "number");
   });
 
   await t.test("employees can report a trainer and the admin resolves it", async () => {
@@ -312,6 +281,12 @@ test("Roles and promotion: ratings, trainer and admin applications", {
     assert.equal(me.body.trainer.nickname, "Top");
     const employees = await promotedClient.get("/trainer/employees").expect(200);
     assert.ok(employees.body.employees.length >= 4);
+    // Completion percentages travel with every roster row.
+    const row = employees.body.employees.find((e) => e.username === "top.score");
+    assert.equal(row.overallPercent, 100);
+    assert.equal(row.modulePercents["manual-handling"], 100);
+    const started = employees.body.employees.find((e) => e.username === "low.score");
+    assert.equal(started.overallPercent, 0);
     // Trainer cannot delete employee IDs.
     const target = employees.body.employees.find((e) => e.username === "star.rater");
     await promotedClient
@@ -334,46 +309,69 @@ test("Roles and promotion: ratings, trainer and admin applications", {
       .expect(201);
   });
 
-  await t.test("a trainer with 25+ stars can apply for and become an admin", async () => {
+  await t.test("trainer -> admin needs tenure plus certified employees", async () => {
     const promotedClient = client(app);
     await promotedClient.init();
     await promotedClient.login("top.score", "Welcome!2026");
-    // Zero stars on the new trainer profile -> not eligible yet.
+    const profileOf = async () =>
+      Trainer.findOne({ userId: (await User.findOne({ username: "top.score" }).lean())._id });
+    // Fresh profile: no tenure, no certified employees -> not eligible.
     await promotedClient
       .post("/trainer/apply-admin", { message: "" })
       .expect(409);
-    const profile = await Trainer.findOne({ userId: (await User.findOne({ username: "top.score" }).lean())._id });
+    let profile = await profileOf();
+    // Tenure alone is not enough.
+    // createdAt is immutable through Mongoose updates; the raw collection
+    // call backdates the profile exactly like a long-running deployment.
+    await Trainer.collection.updateOne(
+      { _id: profile._id },
+      { $set: { createdAt: new Date(Date.now() - 120 * 86400000) } },
+    );
+    await promotedClient
+      .post("/trainer/apply-admin", { message: "Tenure only." })
+      .expect(409);
+    // Certified employees alone are not enough (short tenure).
+    await Module.updateOne(
+      { key: "manual-handling" },
+      { $set: { trainerId: profile._id } },
+    );
     for (let i = 0; i < 5; i++) {
-      const raterUser = await User.create({
-        firstName: `Star${i}`,
-        lastName: "Rater",
-        age: 25,
-        username: `star.rater.${i}`,
-        passwordHash: await hashPassword("Welcome!2026"),
-        role: "employee",
-        mustChangePassword: false,
-        status: "active",
-      });
-      await Rating.create({
-        trainerId: profile._id,
-        userId: raterUser._id,
-        moduleKey: "manual-handling",
-        stars: 5,
-        comment: "",
+      await makeEmployee(`certified.${i}`, {
+        "manual-handling": 80,
+        "working-at-height": 80,
+        "hazard-perception": 80,
       });
     }
+    await Trainer.collection.updateOne(
+      { _id: profile._id },
+      { $set: { createdAt: new Date() } },
+    );
     await promotedClient
-      .post("/trainer/apply-admin", { message: "25 stars collected." })
+      .post("/trainer/apply-admin", { message: "Certified only." })
+      .expect(409);
+    // Both conditions met -> the application goes through.
+    // createdAt is immutable through Mongoose updates; the raw collection
+    // call backdates the profile exactly like a long-running deployment.
+    await Trainer.collection.updateOne(
+      { _id: profile._id },
+      { $set: { createdAt: new Date(Date.now() - 120 * 86400000) } },
+    );
+    const me = await promotedClient.get("/trainer/me").expect(200);
+    assert.equal(me.body.adminEligibility.eligible, true);
+    assert.ok(me.body.adminEligibility.certified >= 5); // 5 created + seeded Anisha
+    assert.ok(me.body.adminEligibility.daysActive >= 90);
+    await promotedClient
+      .post("/trainer/apply-admin", { message: "Tenure and track record." })
       .expect(201);
     await promotedClient
       .post("/trainer/apply-admin", { message: "double" })
       .expect(409);
     const apps = await admin.get("/admin/applications").expect(200);
     const adminApp = apps.body.applications.find(
-      (a) => a.type === "admin" && a.applicant.username === "top.score",
+      (a) => a.type === "admin" && a.applicant.username === "top.score" && a.status === "pending",
     );
     assert.ok(adminApp);
-    assert.equal(adminApp.trainer.stats.totalStars, 25);
+    assert.ok(adminApp.trainer.eligibility.certified >= 5);
     await admin.post(`/admin/applications/${adminApp.id}/approve`, {}).expect(200);
     const nowAdmin = await User.findOne({ username: "top.score" }).lean();
     assert.equal(nowAdmin.role, "admin");
@@ -387,8 +385,7 @@ test("Roles and promotion: ratings, trainer and admin applications", {
     await newAdmin.login("top.score", "Welcome!2026");
     const overview = await newAdmin.get("/admin/overview").expect(200);
     assert.ok(overview.body.stats);
-    // The old trainer sign-in still works for the second admin's trainer profile is removed? No:
-    // approval to admin keeps the trainer profile (module guides remain intact).
+    // Approval to admin keeps the trainer profile (module guides remain intact).
     assert.ok(await Trainer.exists({ userId: nowAdmin._id }));
   });
 });

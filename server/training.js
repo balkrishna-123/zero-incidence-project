@@ -1,5 +1,6 @@
 import express from "express";
 import { completionStatus } from "./completion.js";
+import { attemptPercent } from "./progress-percent.js";
 import mongoose from "mongoose";
 import { randomInt } from "node:crypto";
 import { z } from "zod";
@@ -148,6 +149,8 @@ function safeAttempt(a) {
     completedAt: a.completedAt,
     score: a.score ?? null,
     levels,
+    // Live completion percentage for the bar at the top of the module.
+    percent: attemptPercent(a, course),
     levelQuizComplete: levelQuizComplete(a, course, a.levelIndex),
     currentQuestion:
       cur && !legacy
@@ -351,9 +354,7 @@ export function createTrainingRouter() {
         employeeId: req.user._id,
         moduleKey: KEY,
         open: true,
-      })
-        .select("_id")
-        .lean(),
+      }).lean(),
       TrainingAttempt.find({
         employeeId: req.user._id,
         moduleKey: KEY,
@@ -377,6 +378,12 @@ export function createTrainingRouter() {
       bestScore:
         best?.source === "assessment" && best.bestAttemptId ? best.score : null,
       activeAttemptId: active ? String(active._id) : null,
+      // How much of this module the employee has finished (0-100), shown at
+      // the top of the module page. A passed module always reports 100.
+      percent:
+        (best?.score ?? 0) >= PASS_MARK
+          ? 100
+          : attemptPercent(active, course),
       history: history
         .filter((a) => Array.isArray(a.levelOrders))
         .map((a) => {

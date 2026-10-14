@@ -46,6 +46,8 @@ async function showEmployee(ctx, id) {
       progress: p,
       completion,
       passwordStorage: ps,
+      modulePercents = {},
+      overallPercent: overallPct = 0,
     } = await ctx.api.get(`/admin/employees/${id}`);
     modal({
       title: "Employee overview",
@@ -53,9 +55,9 @@ async function showEmployee(ctx, id) {
       className: "wide",
       content: `
       <div class="detail-header">${avatar(e, "avatar-lg")}<div><h3>${esc(fullName(e))}</h3><p>${esc(e.employeeNumber)} &nbsp;·&nbsp; ${esc(e.username)}</p></div><div style="margin-left:auto">${statusBadge(e.status)}</div></div>
-      <dl class="detail-grid"><div><dt>AGE</dt><dd>${e.age} years</dd></div><div><dt>REGISTERED</dt><dd>${formatDate(e.createdAt)}</dd></div><div><dt>LAST SIGN-IN</dt><dd>${formatDate(e.lastLoginAt)}</dd></div><div><dt>PASSWORD SETUP</dt><dd>${e.mustChangePassword ? "Change required" : "Complete"}</dd></div><div><dt>MODULES PASSED</dt><dd>${p.passed} of 3</dd></div><div><dt>OVERALL SCORE</dt><dd>${p.overallScore === null ? "Awaiting all scores" : `${p.overallScore} / 100`}</dd></div></dl>
+      <dl class="detail-grid"><div><dt>AGE</dt><dd>${e.age} years</dd></div><div><dt>REGISTERED</dt><dd>${formatDate(e.createdAt)}</dd></div><div><dt>LAST SIGN-IN</dt><dd>${formatDate(e.lastLoginAt)}</dd></div><div><dt>PASSWORD SETUP</dt><dd>${e.mustChangePassword ? "Change required" : "Complete"}</dd></div><div><dt>MODULES PASSED</dt><dd>${p.passed} of 3</dd></div><div><dt>COMPLETED</dt><dd>${overallPct}% of all three modules</dd></div><div><dt>OVERALL SCORE</dt><dd>${p.overallScore === null ? "Awaiting all scores" : `${p.overallScore} / 100`}</dd></div></dl>
       <div class="password-storage"><small>PASSWORD STORAGE — HASH ONLY, NEVER THE WORD ITSELF</small><code>${esc(ps.fullHash)}</code><p>${icon("lock", 13)} <span>${esc(ps.parameters)} · random 16-byte salt per account · ${ps.length} characters · checked with constant-time comparison</span></p></div>
-      <div class="section-title"><h2>Learning progress</h2>${progressBadge(p.status)}</div><div class="detail-modules">${p.modules.map((m) => `<div class="detail-module"><span class="module-small-icon">${icon(moduleMeta[m.key].icon)}</span><div><strong>${moduleMeta[m.key].short}</strong><small>${m.score === null ? "Not yet assessed" : `${m.classification} · ${m.attempts} attempt${m.attempts === 1 ? "" : "s"}`}</small></div>${scoreView(m)}</div>`).join("")}</div>
+      <div class="section-title"><h2>Learning progress</h2>${progressBadge(p.status)}</div><div class="detail-modules">${p.modules.map((m) => `<div class="detail-module"><span class="module-small-icon">${icon(moduleMeta[m.key].icon)}</span><div><strong>${moduleMeta[m.key].short}</strong><small>${m.score === null ? "Not yet assessed" : `${m.classification} · ${m.attempts} attempt${m.attempts === 1 ? "" : "s"}`}</small><span class="module-percent-bar" title="${modulePercents[m.key] ?? 0}% of this module finished"><i style="width:${modulePercents[m.key] ?? 0}%"></i></span></div><span class="module-percent">${modulePercents[m.key] ?? 0}%</span>${scoreView(m)}</div>`).join("")}</div>
       <div class="info-callout">${icon(p.eligible ? "award" : "info", 17)}<span>${p.eligible ? "The displayed scores meet the threshold. Only verified completed assessments count for the certificate." : "Every module must reach 70/100 before this employee becomes eligible for certification."}${p.hasDemoScores ? "<br><strong>These scores are labelled demonstration records.</strong>" : ""}</span></div>`,
       footer: `<button class="btn btn-secondary" data-close-modal>Close</button><a class="btn btn-secondary" href="#/admin/certificates/${e.id}">${icon("award", 14)}Completion record</a><a class="btn btn-primary" href="#/admin/employees/${e.id}/edit">${icon("edit", 14)}Edit account</a>`,
     });
@@ -370,7 +372,7 @@ async function employeeForm(ctx, id) {
   };
 }
 function trainerCards(trainers) {
-  return `${trainers.map((t) => `<article class="panel trainer-card"><div class="trainer-card-top"><div class="trainer-portrait"><img src="${esc(t.imageUrl)}" alt="${esc(t.nickname)} trainer profile"></div>${statusBadge(t.status)}</div><h2>${esc(t.nickname)}</h2><p class="legal-name">${esc(fullName(t))} &nbsp;·&nbsp; ${t.accountUsername ? `Signs in as <span style="color:var(--text);font-weight:550">@${esc(t.accountUsername)}</span>` : "Virtual safety guide"}</p><p class="trainer-intro">“${esc(t.introduction || "No introduction set yet.")}”</p><div class="trainer-tags">${t.moduleKeys.length ? t.moduleKeys.map((key) => `<span class="badge neutral">${moduleMeta[key].short}</span>`).join("") : '<span class="badge gray">No modules assigned</span>'}<span class="badge ${t.ratings?.count ? "amber" : "gray"}" title="Total stars earned from employee ratings">${"★"} ${t.ratings?.totalStars ?? 0}</span>${t.permissions?.viewProgress ? '<span class="badge blue">Views progress</span>' : ""}${t.permissions?.resetPassword ? '<span class="badge green">Resets passwords</span>' : ""}</div><div class="trainer-actions"><a class="btn btn-secondary btn-sm" href="#/admin/trainers/${t.id}/edit">${icon("edit", 13)}Edit profile</a><button class="icon-button" data-trainer-status="${t.id}" title="${t.status === "active" ? "Deactivate" : "Reactivate"} trainer" aria-label="${t.status === "active" ? "Deactivate" : "Reactivate"} ${esc(t.nickname)}">${icon(t.status === "active" ? "pause" : "play", 16)}</button><button class="icon-button" data-trainer-delete="${t.id}" title="Delete trainer" aria-label="Delete ${esc(t.nickname)}">${icon("trash", 16)}</button></div></article>`).join("")}<a href="#/admin/trainers/new" class="trainer-add"><span>${icon("plus", 23)}</span><strong>A new face for safer learning</strong><p>Create a virtual trainer to welcome, guide and encourage your employees.</p><span class="text-button red-text mt-24" style="width:auto;height:auto;background:transparent;font-size:10px;margin-bottom:0">Create trainer ${icon("arrow", 12)}</span></a>`;
+  return `${trainers.map((t) => `<article class="panel trainer-card"><div class="trainer-card-top"><div class="trainer-portrait"><img src="${esc(t.imageUrl)}" alt="${esc(t.nickname)} trainer profile"></div>${statusBadge(t.status)}</div><h2>${esc(t.nickname)}</h2><p class="legal-name">${esc(fullName(t))} &nbsp;·&nbsp; ${t.accountUsername ? `Signs in as <span style="color:var(--text);font-weight:550">@${esc(t.accountUsername)}</span>` : "Virtual safety guide"}</p><p class="trainer-intro">“${esc(t.introduction || "No introduction set yet.")}”</p><div class="trainer-tags">${t.moduleKeys.length ? t.moduleKeys.map((key) => `<span class="badge neutral">${moduleMeta[key].short}</span>`).join("") : '<span class="badge gray">No modules assigned</span>'}<span class="badge ${t.eligibility?.eligible ? "green" : "neutral"}" title="Employees certified under this trainer’s guidance">${icon("award", 12)} ${t.eligibility?.certified ?? 0} certified</span>${t.permissions?.viewProgress ? '<span class="badge blue">Views progress</span>' : ""}${t.permissions?.resetPassword ? '<span class="badge green">Resets passwords</span>' : ""}</div><div class="trainer-actions"><a class="btn btn-secondary btn-sm" href="#/admin/trainers/${t.id}/edit">${icon("edit", 13)}Edit profile</a><button class="icon-button" data-trainer-status="${t.id}" title="${t.status === "active" ? "Deactivate" : "Reactivate"} trainer" aria-label="${t.status === "active" ? "Deactivate" : "Reactivate"} ${esc(t.nickname)}">${icon(t.status === "active" ? "pause" : "play", 16)}</button><button class="icon-button" data-trainer-delete="${t.id}" title="Delete trainer" aria-label="Delete ${esc(t.nickname)}">${icon("trash", 16)}</button></div></article>`).join("")}<a href="#/admin/trainers/new" class="trainer-add"><span>${icon("plus", 23)}</span><strong>A new face for safer learning</strong><p>Create a virtual trainer to welcome, guide and encourage your employees.</p><span class="text-button red-text mt-24" style="width:auto;height:auto;background:transparent;font-size:10px;margin-bottom:0">Create trainer ${icon("arrow", 12)}</span></a>`;
 }
 async function trainersPage(ctx) {
   const data = await ctx.api.get("/admin/trainers");
@@ -547,12 +549,12 @@ async function applicationsPage(ctx) {
     const scores = (app.scores || []).map((m) => `<td>${m.score === null ? '<span class="muted">—</span>' : `<span style="font-weight:550">${m.score}</span><small class="muted"> /100</small>`}</td>`).join("");
     const extra = kind === "trainer"
       ? scores
-      : `<td><span class="badge amber">${app.trainer?.stats?.totalStars ?? 0} ★</span></td><td class="muted">${esc(app.trainer?.nickname || "—")}</td>`;
+      : `<td><span class="badge ${app.trainer?.eligibility?.eligible ? "green" : "amber"}">${app.trainer?.eligibility?.certified ?? 0}/${app.trainer?.eligibility?.minCertified ?? 5} certified · ${app.trainer?.eligibility?.daysActive ?? 0}/${app.trainer?.eligibility?.minDays ?? 90} days</span></td><td class="muted">${esc(app.trainer?.nickname || "—")}</td>`;
     return `<tr><td><div class="person-cell"><div class="person-name">${esc(target?.name || "—")}</div><small class="muted">@${esc(target?.username || "—")}</small></div></td><td><span class="badge ${kind === "trainer" ? "blue" : "amber"}">${kind === "trainer" ? "Trainer application" : "Administrator application"}</span></td>${extra}<td><span class="badge ${app.status === "pending" ? "amber" : app.status === "approved" ? "green" : "red"}">${app.status}</span><small class="muted" style="display:block;font-size:8px">${formatDate(app.createdAt)}</small></td><td>${app.message ? `<span class="muted" style="font-size:10px">“${esc(app.message)}”</span>` : '<span class="muted">—</span>'}</td><td>${app.status === "pending" ? `<button type="button" class="btn btn-primary btn-sm" data-approve="${app.id}">${icon("check", 13)}Approve</button> <button type="button" class="btn btn-secondary btn-sm" data-reject="${app.id}">Decline</button>` : '<span class="muted small">—</span>'}</td></tr>`;
   };
   return {
     title: "Applications",
-    html: `${heading("Applications", "Employees and trainers can apply for their next role. Approvals happen here.", null, "PROMOTIONS & ROLES")}<section class="panel"><header class="panel-head"><div><h2>Trainer applications</h2><p>Employees who scored 90+ in all three modules.</p></div>${icon("trainer", 18)}</header><div class="panel-body"><div class="table-scroll"><table class="data-table"><thead><tr><th>Applicant</th><th>Type</th><th>Manual handling</th><th>Working at height</th><th>Hazard perception</th><th>Status</th><th>Message</th><th></th></tr></thead><tbody>${trainerApps.length ? trainerApps.map((a) => rows(a, "trainer")).join("") : '<tr><td colspan="8"><span class="muted">No trainer applications yet.</span></td></tr>'}</tbody></table></div></div></section><section class="panel mt-24"><header class="panel-head"><div><h2>Administrator applications</h2><p>Trainers who collected 25 or more stars.</p></div>${icon("trophy", 18)}</header><div class="panel-body"><div class="table-scroll"><table class="data-table"><thead><tr><th>Applicant</th><th>Type</th><th>Stars</th><th>Trainer</th><th>Status</th><th>Message</th><th></th></tr></thead><tbody>${adminApps.length ? adminApps.map((a) => rows(a, "admin")).join("") : '<tr><td colspan="7"><span class="muted">No administrator applications yet.</span></td></tr>'}</tbody></table></div></div></section>`,
+    html: `${heading("Applications", "Employees and trainers can apply for their next role. Approvals happen here.", null, "PROMOTIONS & ROLES")}<section class="panel"><header class="panel-head"><div><h2>Trainer applications</h2><p>Employees who scored 90+ in all three modules.</p></div>${icon("trainer", 18)}</header><div class="panel-body"><div class="table-scroll"><table class="data-table"><thead><tr><th>Applicant</th><th>Type</th><th>Manual handling</th><th>Working at height</th><th>Hazard perception</th><th>Status</th><th>Message</th><th></th></tr></thead><tbody>${trainerApps.length ? trainerApps.map((a) => rows(a, "trainer")).join("") : '<tr><td colspan="8"><span class="muted">No trainer applications yet.</span></td></tr>'}</tbody></table></div></div></section><section class="panel mt-24"><header class="panel-head"><div><h2>Administrator applications</h2><p>Trainers with the tenure and certification track record.</p></div>${icon("trophy", 18)}</header><div class="panel-body"><div class="table-scroll"><table class="data-table"><thead><tr><th>Applicant</th><th>Type</th><th>Requirements</th><th>Trainer</th><th>Status</th><th>Message</th><th></th></tr></thead><tbody>${adminApps.length ? adminApps.map((a) => rows(a, "admin")).join("") : '<tr><td colspan="7"><span class="muted">No administrator applications yet.</span></td></tr>'}</tbody></table></div></div></section>`,
     mount(root) {
       root.querySelectorAll("[data-approve]").forEach((b) =>
         b.addEventListener("click", async () => {
@@ -594,7 +596,7 @@ async function reportsPage(ctx) {
     .join("");
   return {
     title: "Reports",
-    html: `${heading("Trainer reports", "Feedback employees send about their guides — helpful, missing, or anything in between.", null, "TRAINER FEEDBACK")}<section class="panel"><header class="panel-head"><div><h2>${data.open} open report${data.open === 1 ? "" : "s"}</h2><p>Resolve a report once you have looked into it. The employee sees the status on the Rate trainer page.</p></div>${icon("alert", 18)}</header><div class="panel-body"><div class="table-scroll"><table class="data-table"><thead><tr><th>Employee</th><th>Trainer</th><th>Module</th><th>Report</th><th>Sent</th><th>Status</th><th></th></tr></thead><tbody>${rows || `<tr><td colspan="7"><span class="muted">No trainer reports yet.</span></td></tr>`}</tbody></table></div></div></section>`,
+    html: `${heading("Trainer reports", "Feedback employees send about their guides — helpful, missing, or anything in between.", null, "TRAINER FEEDBACK")}<section class="panel"><header class="panel-head"><div><h2>${data.open} open report${data.open === 1 ? "" : "s"}</h2><p>Resolve a report once you have looked into it. The employee sees the status under Help & resources.</p></div>${icon("alert", 18)}</header><div class="panel-body"><div class="table-scroll"><table class="data-table"><thead><tr><th>Employee</th><th>Trainer</th><th>Module</th><th>Report</th><th>Sent</th><th>Status</th><th></th></tr></thead><tbody>${rows || `<tr><td colspan="7"><span class="muted">No trainer reports yet.</span></td></tr>`}</tbody></table></div></div></section>`,
     mount(root) {
       root.querySelectorAll("[data-resolve]").forEach((b) =>
         b.addEventListener("click", async () => {
@@ -614,13 +616,14 @@ async function reportsPage(ctx) {
 }
 function progressTable(employees) {
   return employees.length
-    ? `<div class="table-scroll"><table class="data-table"><thead><tr><th>Employee</th><th>Manual handling</th><th>Working at height</th><th>Hazard perception</th><th>Overall</th><th>Learning status</th></tr></thead><tbody>${employees.map((e) => `<tr><td>${person(e)}</td>${e.progress.modules.map((m) => `<td>${scoreView(m)}</td>`).join("")}<td>${e.progress.overallScore === null ? '<span class="muted">—</span>' : `<span style="color:var(--text);font-weight:550">${e.progress.overallScore}</span><small class="muted"> /100</small>`}</td><td>${progressBadge(e.progress.status)}</td></tr>`).join("")}</tbody></table></div>`
+    ? `<div class="table-scroll"><table class="data-table"><thead><tr><th>Employee</th><th>Manual handling</th><th>Working at height</th><th>Hazard perception</th><th>Overall</th><th>Completed</th><th>Learning status</th></tr></thead><tbody>${employees.map((e) => `<tr><td>${person(e)}</td>${e.progress.modules.map((m) => `<td>${scoreView(m)}<br><span class="cell-percent" title="Module completion">${e.modulePercents?.[m.key] ?? 0}% done</span></td>`).join("")}<td>${e.progress.overallScore === null ? '<span class="muted">—</span>' : `<span style="color:var(--text);font-weight:550">${e.progress.overallScore}</span><small class="muted"> /100</small>`}</td><td><span class="module-percent-bar" title="${e.overallPercent ?? 0}% of all three modules finished"><i style="width:${e.overallPercent ?? 0}%"></i></span><span class="module-percent">${e.overallPercent ?? 0}%</span></td><td>${progressBadge(e.progress.status)}</td></tr>`).join("")}</tbody></table></div>`
     : empty(
         "No matching learning records",
         "Try another name or change the learning status filter.",
         "chart",
       );
 }
+const MODULE_KEYS_CSV = ["manual-handling", "working-at-height", "hazard-perception"];
 function downloadCSV(rows) {
   function cell(value) {
     let text = String(value ?? "");
@@ -638,6 +641,10 @@ function downloadCSV(rows) {
       "Working at height",
       "Hazard perception",
       "Overall score",
+      "Completed % (all modules)",
+      "Manual handling %",
+      "Working at height %",
+      "Hazard perception %",
       "Modules passed",
       "Certificate eligible",
       "Includes demo scores",
@@ -650,6 +657,8 @@ function downloadCSV(rows) {
       e.status,
       ...e.progress.modules.map((m) => m.score ?? ""),
       e.progress.overallScore ?? "",
+      e.overallPercent ?? 0,
+      ...MODULE_KEYS_CSV.map((k) => e.modulePercents?.[k] ?? 0),
       e.progress.passed,
       e.progress.eligible ? "Yes" : "No",
       e.progress.hasDemoScores ? "Yes" : "No",

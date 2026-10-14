@@ -46,7 +46,9 @@ export const Trainer = model(
   ),
 );
 // Promotion applications: employee -> trainer (90+ in every module) and
-// trainer -> administrator (25+ stars received). Decided by the administrator.
+// trainer -> administrator (tenure plus certified employees under their
+// guidance — see PROMOTION in config.js and server/progress-percent.js).
+// Decided by the administrator.
 export const Application = model(
   "Application",
   new Schema(
@@ -65,19 +67,6 @@ export const Application = model(
     { timestamps: true },
   ),
 );
-// Employees rate the trainer of a module after passing it (Play-Store style).
-const ratingSchema = new Schema(
-  {
-    trainerId: { type: Schema.Types.ObjectId, ref: "Trainer", required: true },
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    moduleKey: { type: String, enum: MODULE_KEYS, required: true },
-    stars: { type: Number, min: 1, max: 5, required: true },
-    comment: { type: String, maxlength: 280, default: "" },
-  },
-  { timestamps: true },
-);
-ratingSchema.index({ userId: 1, moduleKey: 1 }, { unique: true });
-export const Rating = model("Rating", ratingSchema);
 // Employees can report a trainer to the administrator (e.g. a guide that is
 // not helping effectively). The administrator reviews and resolves reports.
 const trainerReportSchema = new Schema(
@@ -98,21 +87,6 @@ const trainerReportSchema = new Schema(
 );
 trainerReportSchema.index({ status: 1, createdAt: -1 });
 export const TrainerReport = model("TrainerReport", trainerReportSchema);
-export async function ratingStats(trainerId) {
-  const [row] = await Rating.aggregate([
-    { $match: { trainerId } },
-    {
-      $group: { _id: null, totalStars: { $sum: "$stars" }, count: { $sum: 1 } },
-    },
-  ]);
-  const totalStars = row?.totalStars || 0;
-  const count = row?.count || 0;
-  return {
-    totalStars,
-    count,
-    average: count ? Math.round((totalStars / count) * 10) / 10 : null,
-  };
-}
 export const Module = model(
   "Module",
   new Schema({

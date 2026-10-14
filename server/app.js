@@ -19,6 +19,7 @@ import {
   sessionSecret,
   MODULE_KEYS,
   DEMO_CREDENTIALS,
+  PROMOTION,
 } from "./config.js";
 
 const APP_VERSION = JSON.parse(
@@ -31,13 +32,17 @@ import {
   Progress,
   Audit,
   Application,
-  Rating,
   TrainerReport,
   safeUser,
   progressSummary,
-  ratingStats,
   nextEmployeeNumber,
 } from "./models.js";
+import {
+  modulePercentMap,
+  modulePercentMaps,
+  overallPercent,
+  trainerAdminEligibility,
+} from "./progress-percent.js";
 import { hashPassword, verifyPassword, passwordProblem } from "./passwords.js";
 
 import { AVAILABLE_MODULE_KEYS } from "./training-content.js";
@@ -136,12 +141,6 @@ const applicationMessage = z
   .trim()
   .max(600)
   .default("");
-const starsInput = z.object({
-  moduleKey: z.enum(MODULE_KEYS),
-  trainerId: z.string().regex(/^[a-fA-F0-9]{24}$/),
-  stars: z.number().int().min(1).max(5),
-  comment: z.string().trim().max(280).default(""),
-});
 const validId = (id) => {
   if (!mongoose.isValidObjectId(id)) fail(404, "Record not found.");
   return id;
@@ -319,10 +318,10 @@ async function assignModules(trainerId, keys) {
   await Module.updateMany({ key: { $in: keys } }, { $set: { trainerId } });
 }
 async function trainerView(trainer) {
-  const [modules, account, stats] = await Promise.all([
+  const [modules, account, eligibility] = await Promise.all([
     Module.find({ trainerId: trainer._id }).select("key title").lean(),
     trainer.userId ? User.findById(trainer.userId).lean() : null,
-    ratingStats(trainer._id),
+    trainerAdminEligibility(trainer),
   ]);
   const doc = trainer.toObject({ versionKey: false });
   delete doc.permissions?._id;
@@ -335,8 +334,25 @@ async function trainerView(trainer) {
     accountUsername: account?.username || null,
     hasAccount: !!trainer.userId,
     accountMustChangePassword: account?.mustChangePassword ?? null,
-    ratings: stats,
+    // Tenure + certified-employee track record (administrator promotion).
+    eligibility,
   };
+}
+// Attach per-module completion percentages (and the overall figure) to a
+// list of employee documents for the trainer/administrator rosters.
+async function withPercents(employees, progressRows) {
+  const percents = await modulePercentMaps(employees.map((e) => e._id));
+  return employees.map((e) => {
+    const map = percents.get(String(e._id)) || {};
+    return {
+      ...safeUser(e),
+      progress: progressSummary(
+        progressRows.filter((p) => String(p.employeeId) === String(e._id)),
+      ),
+      modulePercents: map,
+      overallPercent: overallPercent(map),
+    };
+  });
 }
 async function moduleViews() {
   const modules = await Module.find().populate("trainerId").lean();
@@ -659,27 +675,24 @@ export async function createApp(mongoUrl) {
     if (req.user.role !== "employee")
       fail(403, "This endpoint is for employees.");
     const rows = await Progress.find({ employeeId: req.user._id }).lean();
-    const [modules, rated, application, eligibility] = await Promise.all([
-      moduleViews(),
-      Rating.find({ userId: req.user._id }).lean(),
-      Application.findOne({
-        applicantId: req.user._id,
-        type: "trainer",
-      }).sort({ createdAt: -1 }).lean(),
-      trainerEligibility(req.user._id),
-    ]);
+    const [modules, application, eligibility, modulePercents] =
+      await Promise.all([
+        moduleViews(),
+        Application.findOne({
+          applicantId: req.user._id,
+          type: "trainer",
+        }).sort({ createdAt: -1 }).lean(),
+        trainerEligibility(req.user._id),
+        modulePercentMap(req.user._id),
+      ]);
     res.json({
       modules,
       progress: progressSummary(rows),
       activeTraining: await activeTraining(req.user._id),
       completion: await completionStatus(req.user, { progress: rows }),
-      ratedModules: rated.map((r) => r.moduleKey),
-      myRatings: rated.map((r) => ({
-        moduleKey: r.moduleKey,
-        stars: r.stars,
-        comment: r.comment || "",
-        createdAt: r.createdAt,
-      })),
+      // Per-module completion percentage (0-100) for the progress bars shown
+      // at the top of every module and across the dashboards.
+      modulePercents,
       trainerApplication: application
         ? { status: application.status, createdAt: application.createdAt }
         : null,
@@ -689,19 +702,18 @@ export async function createApp(mongoUrl) {
 
   // ---- Promotion rules (client requirements) ------------------------------
   // Employees may apply to become a trainer with 90/100 or higher in every
-  // module. Trainers may apply to become an administrator after receiving 25
-  // or more stars from employees.
+  // module. Trainers may apply to become an administrator once they combine
+  // the configured tenure with the configured number of employees certified
+  // under their guidance (see PROMOTION in server/config.js).
   async function trainerEligibility(userId) {
     const rows = await Progress.find({ employeeId: userId }).lean();
     const missing = MODULE_KEYS.filter(
-      (key) => (rows.find((r) => r.moduleKey === key)?.score ?? 0) < 90,
+      (key) =>
+        (rows.find((r) => r.moduleKey === key)?.score ?? 0) <
+        PROMOTION.trainerMinScorePerModule,
     );
     return { eligible: missing.length === 0, missing };
   }
-  const adminEligibility = async (trainerId) => {
-    const stats = await ratingStats(trainerId);
-    return { eligible: stats.totalStars >= 25, totalStars: stats.totalStars };
-  };
 
   api.post(
     "/me/apply-trainer",
@@ -740,42 +752,10 @@ export async function createApp(mongoUrl) {
     },
   );
 
-  // After passing a module, employees rate that module's trainer.
-  api.post("/ratings", requireAuth, requireReady, async (req, res) => {
-    const input = starsInput.parse(req.body);
-    const module = await Module.findOne({ key: input.moduleKey }).lean();
-    const trainer = await Trainer.findById(input.trainerId).lean();
-    if (
-      !module?.trainerId ||
-      String(module.trainerId) !== input.trainerId ||
-      !trainer
-    )
-      fail(409, "That trainer is not assigned to this module.");
-    if (trainer.status !== "active")
-      fail(409, "That trainer is not active.");
-    if (
-      await Rating.exists({
-        userId: req.user._id,
-        moduleKey: input.moduleKey,
-      })
-    )
-      fail(409, "You have already rated this module's trainer.");
-    const rating = await Rating.create({
-      trainerId: input.trainerId,
-      userId: req.user._id,
-      moduleKey: input.moduleKey,
-      stars: input.stars,
-      comment: input.comment,
-    });
-    await audit(
-      req,
-      `rated a trainer ${input.stars}/5`,
-      input.moduleKey,
-    );
-    res.status(201).json({ rating: rating.id });
-  });
-
   // ---- Trainer reports (employee feedback for the administrator) ----------
+  // The star-rating feature was retired (Oct 2026 client revision). Employees
+  // still reach the administrator through trainer reports, now opened from
+  // Help & resources in the employee dashboard.
   const reportInput = z
     .object({
       trainerId: z.string().regex(/^[a-fA-F0-9]{24}$/),
@@ -943,12 +923,10 @@ export async function createApp(mongoUrl) {
           status: "open",
         }),
       },
-      employees: employees.slice(0, 5).map((e) => ({
-        ...safeUser(e),
-        progress: progressSummary(
-          progress.filter((p) => String(p.employeeId) === String(e._id)),
-        ),
-      })),
+      employees: withPercents(
+        employees.slice(0, 5),
+        progress,
+      ),
       events,
       modules: await moduleViews(),
       demoMode,
@@ -991,12 +969,7 @@ export async function createApp(mongoUrl) {
       employeeId: { $in: employees.map((e) => e._id) },
     }).lean();
     res.json({
-      employees: employees.map((e) => ({
-        ...safeUser(e),
-        progress: progressSummary(
-          progress.filter((p) => String(p.employeeId) === String(e._id)),
-        ),
-      })),
+      employees: await withPercents(employees, progress),
       total,
       page,
       pages: Math.max(1, Math.ceil(total / limit)),
@@ -1029,9 +1002,12 @@ export async function createApp(mongoUrl) {
     const withHash = await User.findById(employee._id).select("+passwordHash");
     const stored = withHash?.passwordHash || "";
     const parts = stored.split("$");
+    const percentMap = await modulePercentMap(employee._id);
     res.json({
       employee: safeUser(employee),
       progress: progressSummary(rows),
+      modulePercents: percentMap,
+      overallPercent: overallPercent(percentMap),
       completion: await completionStatus(employee, { progress: rows }),
       passwordStorage: {
         format: "scrypt",
@@ -1323,7 +1299,7 @@ export async function createApp(mongoUrl) {
         if (profile)
           context.trainer = {
             nickname: profile.nickname,
-            stats: await ratingStats(profile._id),
+            eligibility: await trainerAdminEligibility(profile),
           };
       }
       withContext.push({
@@ -1393,13 +1369,13 @@ export async function createApp(mongoUrl) {
       if (applicant.role !== "trainer")
         fail(409, "This trainer's role has changed since applying.");
       const profile = await Trainer.findOne({ userId: applicant._id });
-      const { eligible } = profile
-        ? await adminEligibility(profile._id)
+      const eligibility = profile
+        ? await trainerAdminEligibility(profile)
         : { eligible: false };
-      if (!eligible)
+      if (!eligibility.eligible)
         fail(
           409,
-          "The trainer no longer meets the 25-star requirement.",
+          "The trainer no longer meets the promotion requirements (tenure and certified employees).",
         );
       applicant.role = "admin";
       await applicant.save();
@@ -1485,12 +1461,7 @@ export async function createApp(mongoUrl) {
       .lean();
     const rows = await Progress.find().lean();
     res.json({
-      employees: employees.map((e) => ({
-        ...safeUser(e),
-        progress: progressSummary(
-          rows.filter((p) => String(p.employeeId) === String(e._id)),
-        ),
-      })),
+      employees: await withPercents(employees, rows),
       modules: await moduleViews(),
       demoMode,
     });
@@ -1543,7 +1514,7 @@ export async function createApp(mongoUrl) {
         applicantId: req.user._id,
         type: "admin",
       }).sort({ createdAt: -1 }).lean(),
-      adminEligibility(req.trainer._id),
+      trainerAdminEligibility(req.trainer),
     ]);
     res.json({
       trainer: profile,
@@ -1561,14 +1532,23 @@ export async function createApp(mongoUrl) {
     })
       .sort({ firstName: 1 })
       .lean();
-    const rows = await Progress.find().lean();
+    const [rows, percents] = await Promise.all([
+      Progress.find().lean(),
+      modulePercentMaps(employees.map((e) => e._id)),
+    ]);
     res.json({
-      employees: employees.map((e) => ({
-        ...safeUser(e),
-        progress: progressSummary(
-          rows.filter((p) => String(p.employeeId) === String(e._id)),
-        ),
-      })),
+      employees: employees.map((e) => {
+        const map = percents.get(String(e._id)) || {};
+        return {
+          ...safeUser(e),
+          progress: progressSummary(
+            rows.filter((p) => String(p.employeeId) === String(e._id)),
+          ),
+          // Completion percentage per module plus the overall figure.
+          modulePercents: map,
+          overallPercent: overallPercent(map),
+        };
+      }),
       modules: await moduleViews(),
     });
   });
@@ -1609,11 +1589,11 @@ export async function createApp(mongoUrl) {
   );
   trainer.post("/apply-admin", async (req, res) => {
     const message = applicationMessage.parse(req.body.message || "");
-    const { eligible, totalStars } = await adminEligibility(req.trainer._id);
-    if (!eligible)
+    const eligibility = await trainerAdminEligibility(req.trainer);
+    if (!eligibility.eligible)
       fail(
         409,
-        `Trainers can apply for an administrator position after receiving 25 stars (you have ${totalStars}).`,
+        `Trainers can apply for an administrator position after ${eligibility.minDays} active days (you have ${eligibility.daysActive}) and ${eligibility.minCertified} employees certified under their guidance (you have ${eligibility.certified}).`,
       );
     const existing = await Application.findOne({
       applicantId: req.user._id,

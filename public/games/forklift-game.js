@@ -109,6 +109,17 @@
 
     bindUI() {
       $('start-button').addEventListener('click', e => { this.start(); e.currentTarget.blur(); });
+      document.querySelectorAll('[data-delivery]').forEach(item => {
+        item.addEventListener('click', () => {
+          if (this.status === 'complete') return;
+          const i = Number(item.dataset.delivery);
+          if (i < this.active) { this.toast(`Pallet ${two(i + 1)} is already delivered — nice work.`, true); return; }
+          if (i > this.active) { this.toast(`Pallet ${two(i + 1)} unlocks as soon as Pallet ${two(this.active + 1)} is delivered. The manifest runs in order.`, true); return; }
+          if (this.carrying !== null) this.toast(`Carrying Pallet ${two(this.active + 1)} — follow the green marker to Bay ${two(this.active + 1)}.`);
+          else { this.start(); this.toast(`Follow the amber marker to Pallet ${two(this.active + 1)}, then press Space at the forks.`); }
+          this.pulseMarker();
+        });
+      });
       $('action-button').addEventListener('click', e => { this.act(); e.currentTarget.blur(); });
       $('camera-button').addEventListener('click', e => { this.switchCamera(); e.currentTarget.blur(); });
       $('sound-button').addEventListener('click', e => { this.toggleSound(); e.currentTarget.blur(); });
@@ -248,8 +259,23 @@
       }
     }
 
+    syncActive() {
+      // Self-healing guard: the active delivery must always point at an
+      // undelivered pallet, so the shift can never stall after a delivery.
+      if (this.carrying === null && this.active < 3 && this.world.pallets[this.active]?.delivered) {
+        const next = this.world.pallets.find((pallet) => !pallet.delivered);
+        this.active = next ? next.id : 3;
+        this.renderManifest(); this.updateWayfinding();
+      }
+    }
+    pulseMarker() {
+      const marker = $('target-marker');
+      marker.classList.remove('pulse'); void marker.offsetWidth; marker.classList.add('pulse');
+      setTimeout(() => marker.classList.remove('pulse'), 1200);
+    }
     tick(time, delta) {
       if (!Number.isFinite(delta)) return;
+      if (this.status === 'playing' && !this.paused) this.syncActive();
       const dt = Math.min(delta / 1000, .05); this.clock = time / 1000;
       if (this.status === 'playing' && !this.paused) {
         this.elapsed += dt;
@@ -367,7 +393,7 @@
       const points = 1000 + careBonus + efficiencyBonus;
       this.score += points; this.lastDeliveryTime = this.elapsed; this.lastDeliveryBumps = this.bumps; this.active++;
       this.sound.play('delivery'); this.floatScore(points);
-      if (this.active < 3) this.toast(`Right where it belongs. +${points.toLocaleString()} points. ${3 - this.active} to go!`);
+      if (this.active < 3) this.toast(`Right where it belongs. +${points.toLocaleString()} points. Pallet ${two(this.active + 1)} is unlocked — follow the amber marker.`);
       this.renderManifest(); this.renderHUD(); this.updateWayfinding();
       if (this.active === 3) this.complete();
     }
@@ -467,8 +493,9 @@
       $('progress-fill').style.width = `${this.active / 3 * 100}%`;
       document.querySelectorAll('[data-delivery]').forEach((item, i) => {
         item.classList.toggle('active', i === this.active); item.classList.toggle('carried', i === this.carrying);
-        item.classList.toggle('delivered', i < this.active);
-        item.querySelector('.item-status').textContent = i === this.carrying ? 'ON BOARD' : i === this.active ? 'UP NEXT' : '';
+        item.classList.toggle('delivered', i < this.active); item.classList.toggle('locked', i > this.active);
+        const status = item.querySelector('.item-status');
+        if (status) status.textContent = i < this.active ? 'DELIVERED' : i === this.carrying ? 'ON BOARD' : i === this.active ? 'UP NEXT' : 'LOCKED';
         item.querySelector('.delivery-check').innerHTML = i < this.active ? '<svg class="icon"><use href="#i-check"/></svg>' : '';
         item.querySelector('p').innerHTML = i < this.active ? `Safely at Bay ${two(i + 1)}` : `Receiving <span>→</span> Bay ${two(i + 1)}`;
       });

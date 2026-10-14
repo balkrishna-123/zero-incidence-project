@@ -13,7 +13,7 @@ import {
 } from "./ui.js";
 import { loginPage, firstPasswordPage } from "./login.js";
 import { adminPage } from "./admin.js";
-import { employeePage } from "./employee.js";
+import { employeePage, employeeReportHelp } from "./employee.js";
 import { trainerPage } from "./trainer.js";
 import {
   getWorkspaceTheme,
@@ -118,18 +118,28 @@ function help() {
   const role = state.user?.role;
   const admin = role === "admin";
   const trainer = role === "trainer";
-  modal({
-    title: "A safer start, step by step",
-    subtitle: "Your Zero Incident quick guide",
-    content: `
+  const openHelp = (report) =>
+    modal({
+      title: "A safer start, step by step",
+      subtitle: "Your Zero Incident quick guide",
+      content: `
     <p>${admin ? "Everything you need to get a new employee ready for safety training." : trainer ? "Your administrator provides your trainer sign-in and permissions." : "Your administrator provides your account. You set your own password and follow your training journey."}</p>
     <div class="help-steps">
       <div class="help-step"><span>1</span><div><strong>${admin ? "Register an employee" : trainer ? "Check your permissions" : "Make your account yours"}</strong><p>${admin ? "Create a username and temporary password. Share the credentials through a secure channel; they are shown only once." : trainer ? "Your overview shows what your administrator has enabled — viewing employee progress and resetting passwords. Trainers never delete employee IDs." : "Use your temporary credentials, set a new password, then sign in again. Never share your password."}</p></div></div>
-      <div class="help-step"><span>2</span><div><strong>${admin ? "Meet your trainers" : trainer ? "Follow your learners" : "Explore your three modules"}</strong><p>${admin ? "Create a trainer profile, sign-in and permissions, upload an image and assign modules. Trainers introduce activities; the assessment system calculates every score." : trainer ? "Open Employee progress to see module scores, or issue a temporary password when an employee is locked out." : "Each module is a journey: your virtual trainer introduces it, then three levels of study material in a rotatable 360° view (full-screen available), each followed by an eight-question quiz (20 seconds per question) with guide hints. The final result — the average of all twenty-four questions — unlocks after the last quiz."}</p></div></div>
+      <div class="help-step"><span>2</span><div><strong>${admin ? "Meet your trainers" : trainer ? "Follow your learners" : "Explore your three modules"}</strong><p>${admin ? "Create a trainer profile, sign-in and permissions, upload an image and assign modules. Trainers introduce activities; the assessment system calculates every score." : trainer ? "Open Employee progress to see module scores and completion percentages, or issue a temporary password when an employee is locked out." : "Each module is a journey: your virtual trainer introduces it, then three levels of study material in a rotatable 360° view (full-screen available), each followed by an eight-question quiz (20 seconds per question) with guide hints. The final result — the average of all twenty-four questions — unlocks after the last quiz."}</p></div></div>
       <div class="help-step"><span>3</span><div><strong>${admin ? "Keep track of progress" : "Work toward completion"}</strong><p>Every module must score at least 70 out of 100. An overall average cannot compensate for a failed module. A certificate requires genuine verified passes in all three modules. Sample scores do not count.</p></div></div>
-    </div><div class="info-callout mt-24">${icon("info", 17)}<span>The learning flow now includes accounts, all three modules, verified completion and PDF certificates. Demo progress is illustrative, not evidence of completed assessments.</span></div>`,
-    footer: '<button class="btn btn-primary" data-close-modal>Got it</button>',
-  });
+    </div>${report ? report.html : ""}<div class="info-callout mt-24">${icon("info", 17)}<span>The learning flow now includes accounts, all three modules, verified completion and PDF certificates. Demo progress is illustrative, not evidence of completed assessments.</span></div>`,
+      footer: '<button class="btn btn-primary" data-close-modal>Got it</button>',
+      onMount: (element) => report?.mount(element),
+    });
+  if (role === "employee") {
+    // Report-a-trainer moved here when the star-rating page was retired.
+    employeeReportHelp({ api, render() {} })
+      .then(openHelp)
+      .catch(() => openHelp(null));
+    return;
+  }
+  openHelp(null);
 }
 async function activity() {
   try {
@@ -162,12 +172,11 @@ function shell(page, route) {
       ? [
           ["overview", "Overview", "grid"],
           ["employees", "Employee progress", "users"],
-          ["ratings", "My ratings & promotion", "star"],
+          ["promotion", "Promotion", "trophy"],
         ]
       : [
           ["hub", "Training hub", "grid"],
           ["progress", "My progress", "chart"],
-          ["rate-trainer", "Rate trainer", "star"],
           ["certificates", "Certificates", "award"],
         ];
   const prefix = admin ? "/admin" : trainer ? "/trainer" : "/employee";

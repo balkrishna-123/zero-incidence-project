@@ -1,4 +1,4 @@
-import { User, Trainer, Module, Progress, Counter, Audit, Rating, TrainerReport } from "./models.js";
+import { User, Trainer, Module, Progress, Counter, Audit, TrainerReport } from "./models.js";
 import { demoMode, production, DEMO_CREDENTIALS } from "./config.js";
 import { hashPassword, passwordProblem } from "./passwords.js";
 
@@ -126,6 +126,10 @@ export async function seedDatabase() {
     permissions: { viewProgress: true, resetPassword: true },
     introduction:
       "Welcome to Zero Incident! I’m Yeti, your safety guide. Let’s build safer habits, one module at a time.",
+    // Backdated so the demo trainer already meets the tenure half of the
+    // trainer -> administrator promotion rule; the certified-employee half
+    // fills in as employees finish all three modules.
+    createdAt: new Date(Date.now() - 120 * 86400000),
   });
   await Module.updateMany({}, { $set: { trainerId: trainer._id } });
   const people = [
@@ -192,26 +196,6 @@ export async function seedDatabase() {
     action: "assigned a virtual trainer",
     subject: "Yeti · all 3 modules",
   });
-  // Employee ratings for Yeti total 24 stars: one more star in the live demo
-  // unlocks the trainer -> administrator application (25+ stars).
-  const rated = [
-    ["anisha.g", "manual-handling", 4],
-    ["anisha.g", "hazard-perception", 5],
-    ["bikash.t", "manual-handling", 4],
-    ["priya.r", "manual-handling", 5],
-    ["priya.r", "working-at-height", 4],
-    ["nisha.m", "manual-handling", 2],
-  ];
-  for (const [username, moduleKey, stars] of rated) {
-    const ratedBy = await User.findOne({ username }).lean();
-    if (ratedBy)
-      await Rating.create({
-        trainerId: trainer._id,
-        userId: ratedBy._id,
-        moduleKey,
-        stars,
-      });
-  }
   // One open trainer report so the administrator Reports page is not empty.
   const reporter = await User.findOne({ username: "nisha.m" }).lean();
   if (reporter)

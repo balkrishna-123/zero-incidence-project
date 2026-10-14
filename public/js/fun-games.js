@@ -20,7 +20,7 @@ const GAMES = [
     key: "hazard-hunt",
     title: "Spot the Hazard",
     icon: "search",
-    blurb: "Walk the aisle and find every hazard before the shift starts.",
+    blurb: "Walk the 3D aisle and find every hazard before the shift starts.",
   },
   {
     key: "ppe",
@@ -65,13 +65,32 @@ export function funGamesPage(ctx) {
       const stage = root.querySelector("[data-fun-stage]");
       let alive = true;
       let cleanup = null;
+      let mountToken = 0;
       const mountGame = (key) => {
         if (cleanup) cleanup();
         cleanup = null;
         stage.innerHTML = "";
         if (!alive) return;
+        const token = ++mountToken;
         if (key === "quiz") cleanup = mountQuiz(stage, ctx, alive);
-        else if (key === "hazard-hunt") cleanup = mountHazardHunt(stage, alive);
+        else if (key === "hazard-hunt") {
+          // Client requirement (Oct 2026): the aisle walk is 3D now. The 2D
+          // scene stays as the fallback for browsers without WebGL.
+          import("./hazard-hunt-3d.js")
+            .then((m) => {
+              if (!alive || token !== mountToken) return;
+              try {
+                cleanup = m.mountHazardHunt3D(stage, () => alive);
+              } catch (error) {
+                console.error("[hazard-hunt] 3D unavailable, using 2D:", error);
+                if (token === mountToken) cleanup = mountHazardHunt(stage, alive);
+              }
+            })
+            .catch(() => {
+              if (!alive || token !== mountToken) return;
+              cleanup = mountHazardHunt(stage, alive);
+            });
+        }
         else if (key === "ppe") cleanup = mountPpe(stage, alive);
         else mountForklift(stage);
       };
