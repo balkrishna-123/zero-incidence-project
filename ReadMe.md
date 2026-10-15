@@ -3,7 +3,6 @@
 **Prototype Operation Guide (README)**
 
 **Module:** CET257 – Enterprise Project
-**Assessment:** Assignment 1 (A5, A6 & A7)
 **Team:** Tech-Yeti (Bipin Pija, Jiban Thapa Magar, Sushil Gaihre, Safal Sharma)
 
 ---
@@ -39,11 +38,23 @@ Two entry points are provided: an interactive offline prototype (`demo.html`) an
 4. Run `npm start`
 5. Open http://localhost:3000
 
+**Demo accounts (full system)**
+
+| Role | Username | Password |
+| --- | --- | --- |
+| Administrator | `safety.admin` | `ZeroIncident!2026` |
+| Trainer (Yeti) | `yeti` | `Welcome!2026` |
+| Employee (Ramesh) | `ramesh.s` | `Welcome!2026` |
+
+- The sign-in page has small **Admin console**, **Trainer workspace** and **New employee** buttons that fill in these details for you — they do not bypass authentication.
+- The first sign-in as `ramesh.s` in the full system asks you to set a new password (first-login flow).
+- These are published demonstration credentials: do not enter real personal data or reuse a real password.
+
 ## 4. Training Flow Overview
 
 The prototype walks through a complete training journey:
 
-- Login (employee and administrator roles)
+- Login (three roles: employee, trainer and administrator)
 - Walkable 3D warehouse training hub
 - Module briefing from the 3D trainer
 - 360° practical activity (checkpoints / hazard identification)
@@ -56,12 +67,13 @@ Navigation is controlled with on-screen controls (WASD + mouse or the on-screen 
 ## 5. Operator Instructions
 
 - Launch `demo.html` (or the full system)
-- Sign in as an employee (demo account `ramesh.s` / `Welcome!2026` — auto-filled in the prototype)
+- **Employee:** sign in with the demo account (`ramesh.s` / `Welcome!2026` — auto-filled in the prototype); set a new password if asked on first login
 - Enter the 3D Training Hub and open a module door (Hazard Perception, Manual Handling, Working at Height)
 - Complete the practical checkpoints in the 360° scene
 - Answer the timed quiz questions
 - View your score; retake the module if below 70%, or view the completion certificate
-- Administrator (full system): manage employees, monitor progress, and review results
+- **Trainer (yeti / Welcome!2026):** open the Trainer workspace — view employee progress, reset employee passwords, and review ratings and reports
+- **Administrator (safety.admin / ZeroIncident!2026):** add, update and delete users (including trainers), monitor progress and results, and review reports and role applications
 
 ## 6. Scoring & Feedback
 
@@ -73,12 +85,11 @@ Navigation is controlled with on-screen controls (WASD + mouse or the on-screen 
 
 ## 7. Technical Notes
 
-- `demo.html` is built with HTML, CSS, and JavaScript — fully browser-based
-- No server, database, or login required for the prototype
+- `demo.html` is built with HTML, CSS, and JavaScript — fully browser-based, with no server or database required (its sign-in screen is pre-filled with the demo employee account)
 - Full system: Node.js and Express, MongoDB (bundled in-memory), Three.js 3D/360° engine
-- Role-based access control (RBAC) with session and CSRF protection
+- Role-based access control (RBAC) for the three roles, with session and CSRF protection
+- Passwords are stored as salted scrypt hashes — never in plain text
 - Certificates are generated as PDF
-- Designed to support future VR expansion
 
 ## 8. Limitations
 
@@ -86,8 +97,6 @@ Navigation is controlled with on-screen controls (WASD + mouse or the on-screen 
 - Limited number of scenarios
 - Some features remain in progress (badges, advanced analytics, final module interiors)
 - The prototype does not include persistent data storage
-
-These limitations are expected at prototype stage.
 
 ## 9. Academic Context
 
